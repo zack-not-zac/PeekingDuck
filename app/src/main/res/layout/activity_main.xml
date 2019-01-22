@@ -41,13 +41,13 @@
         app:layout_constraintTop_toBottomOf="@+id/checkbox_debug" />
 
     <ImageView
-        android:id="@+id/logo"
-        android:layout_width="46dp"
-        android:layout_height="50dp"
+        android:id="@+id/imageView6"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:src="@drawable/logo_white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_white" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
