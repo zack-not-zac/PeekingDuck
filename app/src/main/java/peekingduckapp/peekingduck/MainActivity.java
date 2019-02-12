@@ -1,9 +1,12 @@
 package peekingduckapp.peekingduck;
 
-import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import java.io.DataOutputStream;
@@ -13,20 +16,42 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     private String script_path;
+    private DrawerLayout drawer; //For the navigation drawer
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //replaces default ActionBar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //Navigation drawer
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        /**
+         * Make a small toast
+         * Used mostly for debugging.
+         * @param txt
+         */
     }
 
-    /**
-     * Make a small toast
-     * Used mostly for debugging.
-     * @param txt
-     */
+    @Override
+    public void onBackPressed() {       //more navigation drawer stuff to animate the icon
+        if (drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     protected void make_toast(String txt) {
         Toast.makeText(MainActivity.this, txt, Toast.LENGTH_LONG).show();
     }

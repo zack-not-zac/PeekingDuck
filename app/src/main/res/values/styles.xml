@@ -1,7 +1,7 @@
     <!-- Base application theme. -->
     <resources>
         <!-- inherit from the material theme -->
-        <style name="AppMainTheme" parent="android:Theme.Material">
+        <style name="AppMainTheme" parent="Theme.AppCompat.Light.NoActionBar">
             <!-- Main theme colors -->
             <!--   your app branding color for the app bar -->
             <item name="android:colorPrimary">@color/primary</item>
@@ -13,5 +13,12 @@
             <!-- hides the bar at the top -->
             <item name="android:windowNoTitle">true</item>
             <item name="android:windowActionBar">false</item>
+
+            <!-- makes the status bar transparent -->
+            <item name="android:statusBarColor">@android:color/transparent</item>
+        </style>
+
+        <style name="AppMainTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+
         </style>
     </resources>
