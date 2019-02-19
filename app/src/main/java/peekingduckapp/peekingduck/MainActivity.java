@@ -1,13 +1,19 @@
 package peekingduckapp.peekingduck;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
+import android.view.MenuItem;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -35,6 +41,27 @@ public class MainActivity extends AppCompatActivity {
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        // Navigation View Listener
+        // Link to developer.android page https://developer.android.com/training/implementing-navigation/nav-drawer
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                menuItem.setChecked(true);
+                // close the drawer when you select and item.
+                drawer.closeDrawers();
+
+                switch(menuItem.getItemId()){
+                    // Add what happens when you click on the individual menu items here.
+                    case R.id.nav_scripts:
+                    alertUser();
+                    return true;
+                }
+
+                return true;
+            }
+        });
 
         /**
          * Make a small toast
@@ -147,5 +174,12 @@ public class MainActivity extends AppCompatActivity {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public void alertUser(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Message").setTitle("Title");
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
