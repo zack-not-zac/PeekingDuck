@@ -1,6 +1,7 @@
 package peekingduckapp.peekingduck;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
@@ -14,4 +15,7 @@ public interface ScriptsDao
 
     @Query("select * from scripts")
     List<Scripts> getScripts();
+
+    @Delete
+    void deleteScript(Scripts scripts);
 }

@@ -14,8 +14,7 @@ import android.widget.Button;
  */
 public class AddScriptFragment extends Fragment implements View.OnClickListener {
 
-    private Button btn_AddScript;
-    private Button btn_ViewScript;
+    private Button btn_AddScript, btn_ViewScript, btn_DeleteScript;
 
     public AddScriptFragment() {
         // Required empty public constructor
@@ -33,18 +32,25 @@ public class AddScriptFragment extends Fragment implements View.OnClickListener 
 
         btn_ViewScript = v.findViewById(R.id.button_viewscripts);
         btn_ViewScript.setOnClickListener(this);
+
+        btn_DeleteScript = v.findViewById(R.id.button_deletescript);
+        btn_DeleteScript.setOnClickListener(this);
         return v;
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        switch (v.getId()) {        //OnClick events for the buttons which overwrite the current "fragment" screen with the one corresponding to the action
             case R.id.button_addscript:
                 MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container,new AddToDatabaseFragment()).
                         addToBackStack(null).commit();
                 break;
             case R.id.button_viewscripts:
                 MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container,new ViewScriptsFragment()).
+                        addToBackStack(null).commit();
+                break;
+            case R.id.button_deletescript:
+                MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container,new DeleteScriptFragment()).
                         addToBackStack(null).commit();
                 break;
         }
