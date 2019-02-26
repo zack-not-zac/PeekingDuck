@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -17,9 +18,10 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewScriptsFragment extends Fragment {
+public class ViewScriptsFragment extends Fragment implements ListAdapter.ClickObjectListener {
     private RecyclerView script_recyclerview;
     private RecyclerView.LayoutManager layoutManager;
+    private List<Scripts> scripts = MainActivity.scriptsDatabase.ScriptsDao().getScripts();
 
     public ViewScriptsFragment() {
         // Required empty public constructor
@@ -27,33 +29,24 @@ public class ViewScriptsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_scripts, container, false);
-        script_recyclerview = v.findViewById(R.id.script_recycler_view);
-        ListAdapter listAdapter = new ListAdapter();
-        script_recyclerview.setAdapter(listAdapter);
+
+        //RecyclerView initialisation
         layoutManager = new LinearLayoutManager(getActivity());
+        script_recyclerview = v.findViewById(R.id.script_recycler_view);
         script_recyclerview.setLayoutManager(layoutManager);
-
-/*        List<Scripts> scripts = MainActivity.scriptsDatabase.ScriptsDao().getScripts();
-
-        String info = "";
-
-        for (Scripts script : scripts)
-        {
-            int id = script.getScript_id();
-            String name = script.getScript_name();
-            String path = script.getScript_path();
-
-            info += "\n\n" + "Id: " + id + "\n Name: " + name + "\n Filepath: " + path;
-
-        }
-
-        txtScripts.setText(info);   //Sets the TextView to the output from reading the database*/
+        ListAdapter listAdapter = new ListAdapter(scripts, this);
+        script_recyclerview.setAdapter(listAdapter);
 
         return v;
     }
 
+    @Override
+    public void OnClickObject(int i) {
+        scripts.get(i);             //selects the script at the current position
+        Toast.makeText(getActivity(),"click test",Toast.LENGTH_SHORT).show();
+    }
 }

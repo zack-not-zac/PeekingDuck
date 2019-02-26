@@ -7,46 +7,47 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
 
-    public List<Scripts> scripts = MainActivity.scriptsDatabase.ScriptsDao().getScripts();
+    private List<Scripts> scripts;
+    private ClickObjectListener mClickObjectListener;
+
+    public ListAdapter(List<Scripts> scriptsList, ClickObjectListener clickObjectListener)
+    {
+        this.scripts = scriptsList;
+        this.mClickObjectListener = clickObjectListener;
+    }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false);
-        return new ListViewHolder(v);
+        return new ListViewHolder(v, mClickObjectListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        ((ListViewHolder) viewHolder).bindView(i);
+    public void onBindViewHolder(@NonNull ListViewHolder viewHolder, int i) {
+        viewHolder.bindView(i);
     }
 
     @Override
     public int getItemCount() {
-/*        int counter = 0;      TODO old code - remove
-        List<Scripts> scripts = MainActivity.scriptsDatabase.ScriptsDao().getScripts();
-
-        for (Scripts script : scripts)
-        {
-            counter++;
-        }*/
-
         return scripts.size();
     }
 
-    private class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         private TextView ItemText;
+        ClickObjectListener clickObjectListener;
 
-        ListViewHolder(View v){
+        ListViewHolder(@NonNull View v, ClickObjectListener clickObjectListener){       //constructor function
             super(v);
 
             ItemText = v.findViewById(R.id.itemText);
-            v.setOnClickListener(this);
+            this.clickObjectListener = clickObjectListener;
         }
 
         public void bindView(int position)
@@ -66,7 +67,11 @@ public class ListAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
-
+            clickObjectListener.OnClickObject(getAdapterPosition());
         }
+    }
+
+    public interface ClickObjectListener {
+        void OnClickObject(int i);
     }
 }
