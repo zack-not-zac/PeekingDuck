@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer; //For the navigation drawer
     public static FragmentManager fragmentManager;
     public static ScriptsDatabase scriptsDatabase;
+    private ViewScriptsFragment viewScriptsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +76,15 @@ public class MainActivity extends AppCompatActivity {
          * @param txt
          */
 
+        viewScriptsFragment = new ViewScriptsFragment();
+
         if(findViewById(R.id.fragment_container)!=null)
         {
-            if (savedInstanceState != null)
+            if (savedInstanceState == null)     //if view has not been created yet
             {
-                return;
+                fragmentManager.beginTransaction().replace(R.id.fragment_container,viewScriptsFragment).commit(); //adds AddScriptFragment to mainactivity
+                navigationView.setCheckedItem(R.id.nav_scripts);
             }
-            fragmentManager.beginTransaction().add(R.id.fragment_container,new AddScriptFragment()).commit(); //adds AddScriptFragment to mainactivity
         }
     }
 
