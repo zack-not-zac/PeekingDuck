@@ -10,6 +10,10 @@
         <item android:id="@+id/nav_queue"
             android:icon="@drawable/ic_queue"
             android:title="Queue"/>
+        <item
+            android:id="@+id/nav_interpreter"
+            android:icon="@drawable/ic_code"
+            android:title="Interpreter" />
         <!-- <item android:id="@+id/nav_[FUNC NAME]"
             android:icon="@drawable/ic_[IC NAME]"
             android:title="TEXT"/> -->
