@@ -3,4 +3,8 @@
     <color name="primary">#000000</color>
     <color name="primary_dark">#666666</color>
     <color name="accent">#00a8ff</color>
+
+    <color name="list_background">#424242</color>
+
+    <color name="nav_background">#272727</color>
 </resources>

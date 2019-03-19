@@ -5,13 +5,20 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 @Entity (tableName = "scripts")
-public class Scripts {
+public class Script {
     //variables
-    @PrimaryKey
+    @PrimaryKey (autoGenerate = true)
     @NonNull
     private int script_id;
+
     private String script_name;
-    private String script_path; //TODO: Might need removed, don't know if this var will be necessary in final application
+    private String script_path;
+
+    public Script(String script_name, String script_path)
+    {
+        this.script_name = script_name;
+        this.script_path = script_path;
+    }
 
     public int getScript_id() {
         return script_id;
