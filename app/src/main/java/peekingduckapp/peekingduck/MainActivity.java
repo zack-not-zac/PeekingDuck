@@ -1,6 +1,5 @@
 package peekingduckapp.peekingduck;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.persistence.room.Room;
 import android.os.Bundle;
@@ -25,18 +24,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
-    private String script_path;
     private DrawerLayout drawer; //For the navigation drawer
     public static FragmentManager fragmentManager;
-    public static ScriptsDatabase scriptsDatabase;
     private ViewScriptsFragment viewScriptsFragment;
+    private String script_path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
-        scriptsDatabase = Room.databaseBuilder(getApplicationContext(),ScriptsDatabase.class,"scriptdb").allowMainThreadQueries().build();  //TODO: Remove main thread queries and carry out the tasks on a second thread
 
         // ----------------------------- STUFF FOR NAV DRAWER - ALL CODE SHOULD BE ADDED UNDERNEATH ---------------------------------------
         //replaces default ActionBar

@@ -1,5 +1,6 @@
 package peekingduckapp.peekingduck;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -11,11 +12,11 @@ import java.util.List;
 public interface ScriptsDao
 {
     @Insert
-    void addScript(Scripts newScript);
-
-    @Query("select * from scripts")
-    List<Scripts> getScripts();
+    void insert(Script newScript);
 
     @Delete
-    void deleteScript(Scripts scripts);
+    void delete(Script script);
+
+    @Query("SELECT * FROM scripts")
+    LiveData<List<Script>> viewScripts();
 }
