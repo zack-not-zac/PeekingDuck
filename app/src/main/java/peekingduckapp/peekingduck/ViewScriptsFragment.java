@@ -54,7 +54,7 @@ public class ViewScriptsFragment extends Fragment {
             }
         });
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Notes");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Scripts");
 
         listAdapter.setOnItemClickedListener(new ListAdapter.onItemClickedListener() {
             @Override

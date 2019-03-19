@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="210dp"
+    android:layout_height="wrap_content"
     android:background="@color/accent"
-    android:gravity="bottom"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
@@ -12,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher_round"
-        android:contentDescription="Logo" />
+        android:contentDescription="Logo"
+        android:paddingTop="32dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,12 +21,6 @@
         android:fontFamily="sans-serif"
         android:paddingTop="8dp"
         android:text="PeekingDuck"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-thin"
-        android:text="Available on GitHub"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textColor="@android:color/background_light" />
 </LinearLayout>
