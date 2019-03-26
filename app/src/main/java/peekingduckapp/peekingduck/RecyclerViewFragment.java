@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
 public class RecyclerViewFragment extends Fragment {
     private RecyclerView script_recyclerview;
     private RecyclerView.LayoutManager layoutManager;
-    private ListAdapter listAdapter;
+    private ScriptAdapter scriptAdapter;
     private QueueAdapter queueAdapter;
     private ScriptViewModel scriptVM;
 
@@ -49,19 +48,19 @@ public class RecyclerViewFragment extends Fragment {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Scripts");
 
             //RecyclerView initialisation
-            listAdapter = new ListAdapter();
-            script_recyclerview.setAdapter(listAdapter);
+            scriptAdapter = new ScriptAdapter();
+            script_recyclerview.setAdapter(scriptAdapter);
 
             scriptVM = ViewModelProviders.of(this).get(ScriptViewModel.class);
 
             scriptVM.getAllScripts().observe(getActivity(), new Observer<List<Script>>() {
                 @Override
                 public void onChanged(@Nullable List<Script> scripts) {
-                    listAdapter.setScripts(scripts);
+                    scriptAdapter.setScripts(scripts);
                 }
             });
 
-            listAdapter.setOnItemClickedListener(new ListAdapter.onItemClickedListener() {
+            scriptAdapter.setOnItemClickedListener(new ScriptAdapter.onItemClickedListener() {
                 @Override
                 public void onItemClick(Script script) {
                     //TODO: code for onClick goes here
