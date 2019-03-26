@@ -48,11 +48,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     public class ListViewHolder extends RecyclerView.ViewHolder
     {
         private TextView ItemText;
+        private TextView IDText;
 
         ListViewHolder(@NonNull View v){       //constructor function
             super(v);
 
             ItemText = v.findViewById(R.id.itemText);
+            IDText = v.findViewById(R.id.idText);
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,17 +69,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
         public void bindView(int position)
         {
-            String info = "";
+            String info = "";       //info displayed in the textbox
 
             Script script = scripts.get(position);
 
             int id = script.getScript_id();
             String name = script.getScript_name();
-            String path = script.getScript_path();
+            //String path = script.getScript_path();
 
-            info += "Id: " + id + "\n Name: " + name + "\n Filepath: " + path;
+            info += name;
 
             ItemText.setText(info);   //Sets the TextView to the output from reading the database
+            IDText.setText("ID: " + id);
         }
     }
 

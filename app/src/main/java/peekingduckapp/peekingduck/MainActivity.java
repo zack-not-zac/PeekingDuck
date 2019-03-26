@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 switch(menuItem.getItemId()){
                     // Add what happens when you click on the individual menu items here.
                     case R.id.nav_scripts:
-                    alertUser();
+                    fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);        //clears the backstack when going back to main screen
                     return true;
                 }
 
@@ -191,10 +191,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void alertUser(){
+/*    public void alertUser(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Message").setTitle("Title");
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
+    }*/
 }
