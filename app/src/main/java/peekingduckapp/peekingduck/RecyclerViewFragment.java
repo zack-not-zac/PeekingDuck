@@ -68,11 +68,20 @@ public class RecyclerViewFragment extends Fragment {
                     Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            scriptAdapter.setOnDeleteClickedListener(new ScriptAdapter.deleteBtnClickedListener() {
+                @Override
+                public void onDeleteClick(Script script) {
+                    scriptVM.delete(script);
+                }
+            });
         }
         else if (activity.isUseQueueAdapter()) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Script Queue");
             queueAdapter = new QueueAdapter();
             script_recyclerview.setAdapter(queueAdapter);
+
+
 
             scriptVM = ViewModelProviders.of(this).get(ScriptViewModel.class);
 
@@ -89,6 +98,12 @@ public class RecyclerViewFragment extends Fragment {
                     //TODO: code for onClick goes here
 
                     Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+            queueAdapter.setOnDeleteClickedListener(new QueueAdapter.deleteBtnClickedListener() {
+                @Override
+                public void onDeleteClick(QueueItem item) {
+                    scriptVM.removeFromQueue(item);
                 }
             });
         }

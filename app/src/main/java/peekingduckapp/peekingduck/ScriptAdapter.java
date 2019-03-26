@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class ScriptAdapter extends RecyclerView.Adapter<ScriptAdapter.ListViewHo
 
     private List<Script> scripts = new ArrayList<>();
     private onItemClickedListener listener;
+    private ImageButton delete_btn;
+    private deleteBtnClickedListener delete_listener;
 
     @NonNull
     @Override
@@ -42,17 +45,29 @@ public class ScriptAdapter extends RecyclerView.Adapter<ScriptAdapter.ListViewHo
         return scripts.get(pos);
     }
 
+    /*public int getPos(Script script)
+    {
+        for (int x = 0; x < scripts.size(); x++)
+        {
+            if (scripts.get(x) == script)
+            {
+                return x;
+            }
+        }
+
+        return -1;
+    }*/
+
 
     public class ListViewHolder extends RecyclerView.ViewHolder
     {
         private TextView ItemText;
-        private TextView IDText;
 
         ListViewHolder(@NonNull View v){       //constructor function
             super(v);
 
             ItemText = v.findViewById(R.id.itemText);
-            IDText = v.findViewById(R.id.idText);
+            delete_btn = v.findViewById(R.id.delete_btn);
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,18 +78,25 @@ public class ScriptAdapter extends RecyclerView.Adapter<ScriptAdapter.ListViewHo
                     }
                 }
             });
+
+            delete_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    delete_listener.onDeleteClick(scripts.get(pos));
+                    notifyItemRemoved(pos);
+                }
+            });
         }
 
         public void bindView(int position)
         {
             Script script = scripts.get(position);
 
-            int id = script.getScript_id();
             String name = script.getScript_name();
             //String path = script.getScript_path();
 
             ItemText.setText(name);   //Sets the TextView to the output from reading the database
-            IDText.setText("ID: " + id);
         }
     }
 
@@ -82,8 +104,15 @@ public class ScriptAdapter extends RecyclerView.Adapter<ScriptAdapter.ListViewHo
         void onItemClick(Script script);
     }
 
+    public interface deleteBtnClickedListener {
+        void onDeleteClick(Script script);
+    }
+
     public void setOnItemClickedListener(onItemClickedListener listener) {
         this.listener = listener;
+    }
 
+    public void setOnDeleteClickedListener(deleteBtnClickedListener delete_listener){
+        this.delete_listener = delete_listener;
     }
 }

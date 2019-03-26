@@ -31,15 +31,17 @@
             android:textColor="@android:color/white"
             android:ellipsize="end"
             android:maxLines="1"
-            android:layout_toStartOf="@+id/idText"/>
+            android:layout_toStartOf="@+id/delete_btn"/>
 
-        <TextView
+        <ImageButton
+            android:id="@+id/delete_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ID: 0"
-            android:textColor="@android:color/darker_gray"
+            android:padding="16dp"
+            card_view:srcCompat="@drawable/ic_delete"
             android:layout_alignParentEnd="true"
-            android:id="@+id/idText"/>
+            android:background="@color/list_background" />
+
 
     </RelativeLayout>
 
