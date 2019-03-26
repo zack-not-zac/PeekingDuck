@@ -10,12 +10,14 @@ import java.util.List;
 public class ScriptViewModel extends AndroidViewModel {
     private ScriptRepo repo;
     private LiveData<List<Script>> scripts;
+    private LiveData<List<QueueItem>> queue;
 
     public ScriptViewModel(@NonNull Application application) {
         super(application);
 
         repo = new ScriptRepo(application);
         scripts = repo.getScripts();
+        queue = repo.viewQueue();
     }
 
     public void insert(Script script)
@@ -30,5 +32,21 @@ public class ScriptViewModel extends AndroidViewModel {
 
     public LiveData<List<Script>> getAllScripts() {
         return scripts;
+    }
+
+
+    public void addToQueue(QueueItem item)
+    {
+        repo.addToQueue(item);
+    }
+
+    public void removeFromQueue(QueueItem item)
+    {
+        repo.removeFromQueue(item);
+    }
+
+    public LiveData<List<QueueItem>> viewQueue()
+    {
+        return queue;
     }
 }

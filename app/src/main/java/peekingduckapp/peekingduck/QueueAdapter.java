@@ -5,51 +5,49 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
+public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHolder> {
 
-    private List<Script> scripts = new ArrayList<>();
+    private List<QueueItem> queue = new ArrayList<>();
     private onItemClickedListener listener;
 
     @NonNull
     @Override
-    public ListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public QueueViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false);
-        return new ListViewHolder(v);
+        return new QueueViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull QueueViewHolder viewHolder, int i) {
         viewHolder.bindView(i);
     }
 
-    public void setScripts(List<Script> scripts) {
-        this.scripts = scripts;
+    public void setQueue(List<QueueItem> queue) {
+        this.queue = queue;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return scripts.size();
+        return queue.size();
     }
 
-    public Script getScript(int pos)
+    public QueueItem getQueueItem(int pos)
     {
-        return scripts.get(pos);
+        return queue.get(pos);
     }
 
-
-    public class ListViewHolder extends RecyclerView.ViewHolder
+    public class QueueViewHolder extends RecyclerView.ViewHolder
     {
         private TextView ItemText;
         private TextView IDText;
 
-        ListViewHolder(@NonNull View v){       //constructor function
+        QueueViewHolder(@NonNull View v){       //constructor function
             super(v);
 
             ItemText = v.findViewById(R.id.itemText);
@@ -60,7 +58,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
                     if (listener != null && pos != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(scripts.get(pos));       //passes the note at the position clicked
+                        listener.onItemClick(queue.get(pos));       //passes the note at the position clicked
                     }
                 }
             });
@@ -68,19 +66,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
         public void bindView(int position)
         {
-            Script script = scripts.get(position);
+            QueueItem item = queue.get(position);
 
-            int id = script.getScript_id();
-            String name = script.getScript_name();
-            //String path = script.getScript_path();
+            int id = item.getID();
+            String script_body = item.getScript_body();
 
-            ItemText.setText(name);   //Sets the TextView to the output from reading the database
+            ItemText.setText(script_body);   //Sets the TextView to the output from reading the database
             IDText.setText("ID: " + id);
         }
     }
 
     public interface onItemClickedListener {        //listens for a note to be clicked
-        void onItemClick(Script script);
+        void onItemClick(QueueItem item);
     }
 
     public void setOnItemClickedListener(onItemClickedListener listener) {

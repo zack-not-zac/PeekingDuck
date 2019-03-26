@@ -1,7 +1,5 @@
 package peekingduckapp.peekingduck;
 
-import android.app.AlertDialog;
-import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,8 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.widget.Toast;
 import android.view.MenuItem;
 
@@ -26,14 +22,21 @@ import java.io.OutputStream;
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer; //For the navigation drawer
     public static FragmentManager fragmentManager;
-    private ViewScriptsFragment viewScriptsFragment;
+    private RecyclerViewFragment viewScriptsFragment;
+    private RecyclerViewFragment queueFragment;
     private String script_path;
+    private boolean useQueueAdapter;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
+
+        //Fragment initialisation
+        viewScriptsFragment = new RecyclerViewFragment();
+        queueFragment = new RecyclerViewFragment();
 
         // ----------------------------- STUFF FOR NAV DRAWER - ALL CODE SHOULD BE ADDED UNDERNEATH ---------------------------------------
         //replaces default ActionBar
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Navigation View Listener
         // Link to developer.android page https://developer.android.com/training/implementing-navigation/nav-drawer
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -59,8 +62,13 @@ public class MainActivity extends AppCompatActivity {
                 switch(menuItem.getItemId()){
                     // Add what happens when you click on the individual menu items here.
                     case R.id.nav_scripts:
-                    fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);        //clears the backstack when going back to main screen
-                    return true;
+                        useQueueAdapter = false;
+                        fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);        //clears the backstack when going back to main screen
+                        return true;
+                    case R.id.nav_queue:
+                        useQueueAdapter = true;
+                        fragmentManager.beginTransaction().replace(R.id.fragment_container,queueFragment).addToBackStack(null).commit();
+                        return true;
                 }
 
                 return true;
@@ -73,23 +81,34 @@ public class MainActivity extends AppCompatActivity {
          * @param txt
          */
 
-        viewScriptsFragment = new ViewScriptsFragment();
-
         if(findViewById(R.id.fragment_container)!=null)
         {
             if (savedInstanceState == null)     //if view has not been created yet
             {
+                useQueueAdapter = false;
                 fragmentManager.beginTransaction().replace(R.id.fragment_container,viewScriptsFragment).commit(); //adds AddScriptFragment to mainactivity
                 navigationView.setCheckedItem(R.id.nav_scripts);
             }
         }
     }
 
+    public boolean isUseQueueAdapter()
+    {
+        return useQueueAdapter;     //this function tells RecyclerViewFragment what adapter to use
+    }                               //which determines if it will view the script table or the queue table
+
     @Override
     public void onBackPressed() {       //more navigation drawer stuff to animate the icon
         if (drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else if (queueFragment.isVisible())
+        {
+            useQueueAdapter = false;
+            fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);        //clears the backstack when going back to main screen
+            navigationView.setCheckedItem(R.id.nav_scripts);        //allows the back button to swap the adapter if queue fragment is visible
+        }
+        else {
             super.onBackPressed();
         }
     }
