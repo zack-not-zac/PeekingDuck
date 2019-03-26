@@ -1,9 +1,7 @@
 package peekingduckapp.peekingduck;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.persistence.room.Room;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.Toast;
@@ -25,21 +22,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
-    private String script_path;
     private DrawerLayout drawer; //For the navigation drawer
     public static FragmentManager fragmentManager;
-    public static ScriptsDatabase scriptsDatabase;
+    private ViewScriptsFragment viewScriptsFragment;
+    private String script_path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
-        scriptsDatabase = Room.databaseBuilder(getApplicationContext(),ScriptsDatabase.class,"scriptdb").allowMainThreadQueries().build();  //TODO: Remove main thread queries and carry out the tasks on a second thread
 
         // ----------------------------- STUFF FOR NAV DRAWER - ALL CODE SHOULD BE ADDED UNDERNEATH ---------------------------------------
         //replaces default ActionBar
@@ -65,28 +59,30 @@ public class MainActivity extends AppCompatActivity {
                 switch(menuItem.getItemId()){
                     // Add what happens when you click on the individual menu items here.
                     case R.id.nav_scripts:
-                        alertUser();
-                        return true;
-                    case R.id.nav_interpreter:
-                        Intent intent = new Intent(MainActivity.this, InterpreterActivity.class);
-                        intent.putExtra("script_path", script_path);
-                        startActivity(intent);
-                        return true;
+                    alertUser();
+                    return true;
                 }
 
                 return true;
             }
         });
 
+        /**
+         * Make a small toast
+         * Used mostly for debugging.
+         * @param txt
+         */
+
+        viewScriptsFragment = new ViewScriptsFragment();
+
         if(findViewById(R.id.fragment_container)!=null)
         {
-            if (savedInstanceState != null)
+            if (savedInstanceState == null)     //if view has not been created yet
             {
-                return;
+                fragmentManager.beginTransaction().replace(R.id.fragment_container,viewScriptsFragment).commit(); //adds AddScriptFragment to mainactivity
+                navigationView.setCheckedItem(R.id.nav_scripts);
             }
-            fragmentManager.beginTransaction().add(R.id.fragment_container,new AddScriptFragment()).commit(); //adds AddScriptFragment to mainactivity
         }
-        unbundle_file();
     }
 
     @Override
@@ -98,11 +94,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Make a small toast
-     * Used mostly for debugging.
-     * @param txt
-     */
     protected void make_toast(String txt) {
         Toast.makeText(MainActivity.this, txt, Toast.LENGTH_LONG).show();
     }
@@ -130,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
      * Requires root
      */
     protected void unbundle_file() {
-        Log.d("FILE", "Unbundling file");
         InputStream is = getResources().openRawResource(getResources().getIdentifier("hid_gadget_test", "raw", getPackageName()));
         boolean successful_copy = false;
 
