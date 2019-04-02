@@ -6,7 +6,6 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import java.util.List;
-import java.util.Queue;
 
 public class ScriptViewModel extends AndroidViewModel {
     private ScriptRepo repo;
