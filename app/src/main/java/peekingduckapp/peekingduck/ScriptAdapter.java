@@ -17,11 +17,15 @@ public class ScriptAdapter extends RecyclerView.Adapter<ScriptAdapter.ListViewHo
     private onItemClickedListener listener;
     private ImageButton delete_btn;
     private deleteBtnClickedListener delete_listener;
+    private TextView queue_txt;
 
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false);
+        queue_txt = v.findViewById(R.id.queuePos_text);
+        queue_txt.setVisibility(v.GONE);
+
         return new ListViewHolder(v);
     }
 

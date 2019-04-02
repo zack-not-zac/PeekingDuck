@@ -1,5 +1,6 @@
 package peekingduckapp.peekingduck;
 
+import android.app.Application;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,12 +49,14 @@ public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHol
     {
         private TextView ItemText;
         private ImageButton delete_btn;
+        private TextView queue_txt;
 
         QueueViewHolder(@NonNull View v){       //constructor function
             super(v);
 
             ItemText = v.findViewById(R.id.itemText);
             delete_btn = v.findViewById(R.id.delete_btn);
+            queue_txt = v.findViewById(R.id.queuePos_text);
 
             delete_btn.setImageResource(R.drawable.ic_minus);
 
@@ -80,8 +83,10 @@ public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHol
         {
             QueueItem item = queue.get(position);
             String script_body = item.getScript_body();
+            int pos = item.getPos();
 
             ItemText.setText(script_body);   //Sets the TextView to the output from reading the database
+            queue_txt.setText(String.valueOf(pos));
         }
     }
 

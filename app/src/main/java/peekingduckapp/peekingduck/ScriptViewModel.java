@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import java.util.List;
+import java.util.Queue;
 
 public class ScriptViewModel extends AndroidViewModel {
     private ScriptRepo repo;
@@ -38,6 +39,11 @@ public class ScriptViewModel extends AndroidViewModel {
     public void addToQueue(QueueItem item)
     {
         repo.addToQueue(item);
+    }
+
+    public void editQueueItem(QueueItem item)
+    {
+        repo.editQueueItem(item);
     }
 
     public void removeFromQueue(QueueItem item)

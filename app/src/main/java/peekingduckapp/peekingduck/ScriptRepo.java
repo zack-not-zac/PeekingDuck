@@ -46,6 +46,11 @@ public class ScriptRepo {
         new AddToQueueAsyncTask(queueDao).execute(item);
     }
 
+    public void editQueueItem (QueueItem item)
+    {
+        new EditQueueItemAsyncTask(queueDao).execute(item);
+    }
+
     public void removeFromQueue(QueueItem item)
     {
         new RemoveFromQueueAsyncTask(queueDao).execute(item);
@@ -95,6 +100,18 @@ public class ScriptRepo {
         @Override
         protected Void doInBackground(QueueItem... queueItem) {
             queueDao.addToQueue(queueItem[0]);
+            return null;
+        }
+    }
+    private static class EditQueueItemAsyncTask extends AsyncTask<QueueItem, Void, Void>
+    {
+        private QueueDao queueDao;
+
+        private EditQueueItemAsyncTask (QueueDao queueDao){this.queueDao = queueDao;}
+
+        @Override
+        protected Void doInBackground(QueueItem... queueItem) {
+            queueDao.editQueueItem(queueItem[0]);
             return null;
         }
     }
