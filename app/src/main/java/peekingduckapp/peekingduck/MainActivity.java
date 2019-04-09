@@ -1,9 +1,12 @@
 package peekingduckapp.peekingduck;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,8 +26,9 @@ import java.io.OutputStream;
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer; //For the navigation drawer
     public static FragmentManager fragmentManager;
-    private RecyclerViewFragment viewScriptsFragment;
-    private RecyclerViewFragment queueFragment;
+    private FragmentScripts viewScriptsFragment;
+    private FragmentQueue queueFragment;
+    private FragmentEdit editFragment;
     private boolean useQueueAdapter;
     NavigationView navigationView;
 
@@ -35,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         //Fragment initialisation
-        viewScriptsFragment = new RecyclerViewFragment();
-        queueFragment = new RecyclerViewFragment();
+        viewScriptsFragment = new FragmentScripts();
+        queueFragment = new FragmentQueue();
+        editFragment = new FragmentEdit();
 
         // ----------------------------- STUFF FOR NAV DRAWER - ALL CODE SHOULD BE ADDED UNDERNEATH ---------------------------------------
         //replaces default ActionBar
@@ -62,11 +67,9 @@ public class MainActivity extends AppCompatActivity {
                 switch(menuItem.getItemId()){
                     // Add what happens when you click on the individual menu items here.
                     case R.id.nav_scripts:
-                        useQueueAdapter = false;
                         fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);        //clears the backstack when going back to main screen
                         return true;
                     case R.id.nav_queue:
-                        useQueueAdapter = true;
                         fragmentManager.beginTransaction().replace(R.id.fragment_container,queueFragment).addToBackStack(null).commit();
                         return true;
                     case R.id.nav_interpreter:
@@ -86,11 +89,26 @@ public class MainActivity extends AppCompatActivity {
         {
             if (savedInstanceState == null)     //if view has not been created yet
             {
-                useQueueAdapter = false;
                 fragmentManager.beginTransaction().replace(R.id.fragment_container,viewScriptsFragment).commit(); //adds AddScriptFragment to mainactivity
                 navigationView.setCheckedItem(R.id.nav_scripts);
             }
         }
+
+        request_permissions();
+    }
+
+    private void request_permissions() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Toast.makeText(this, "External Storage permissions are required to store posters. Please allow this", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
+    }
+
+    public void switch_fragment_to_edit(Script script) {
+        editFragment.setScript(script);
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, editFragment).addToBackStack(null).commit();
+
     }
 
     public boolean isUseQueueAdapter()

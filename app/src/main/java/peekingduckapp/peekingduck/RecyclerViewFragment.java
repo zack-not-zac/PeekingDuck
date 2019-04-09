@@ -12,10 +12,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +36,7 @@ public class RecyclerViewFragment extends Fragment {
     private ScriptAdapter scriptAdapter;
     private QueueAdapter queueAdapter;
     private ScriptViewModel scriptVM;
+    private String hid_path;
 
     public RecyclerViewFragment() {
         // Required empty public constructor
@@ -66,6 +74,7 @@ public class RecyclerViewFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_scripts, container, false);
+        setHasOptionsMenu(true);
 
         MainActivity activity = (MainActivity) getActivity();
 
@@ -95,6 +104,8 @@ public class RecyclerViewFragment extends Fragment {
                     //TODO: code for onClick goes here
 
                     Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_SHORT).show();
+                    QueueItem item = new QueueItem(script.getScript_name(), FileHandler.load_from_external_storage(script.getScript_path()), 0);
+                    scriptVM.addToQueue(item);
                 }
             });
 
@@ -162,5 +173,71 @@ public class RecyclerViewFragment extends Fragment {
             });
         }
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (((MainActivity) getActivity()).isUseQueueAdapter()) {
+            inflater.inflate(R.menu.menu_queue, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.queue_run:
+                run_queue();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    protected void unbundle_file() {
+        InputStream is = getResources().openRawResource(getResources().getIdentifier("hid_gadget_test", "raw", getActivity().getPackageName()));
+        boolean successful_copy = false;
+
+        File file = new File(getActivity().getFilesDir(), "hid_gadget_test");
+        hid_path = file.getAbsolutePath();
+
+        // If file is not already unpacked
+        if(file.exists()) file.delete();
+//        if (!file.exists()) {
+        try {
+            OutputStream output = new FileOutputStream(file);
+            byte[] buffer = new byte[4 * 1024];
+            int read;
+            while ((read = is.read(buffer)) != -1) {
+                output.write(buffer, 0, read);
+            }
+            successful_copy = true;
+            output.flush();
+            output.close();
+            is.close();
+        } catch (Exception e) {
+            successful_copy = false;
+        }
+
+        if (successful_copy) {
+            try {
+                Process proc = Runtime.getRuntime()
+                        .exec(new String[]{"su", "-c", "chmod 755 " + hid_path});
+                proc.waitFor();
+            } catch (Exception e) {
+            }
+        }
+//        }
+    }
+
+    private void run_queue() {
+        unbundle_file();
+        if(queueAdapter.getItemCount() > 0) {
+            QueueItem item = queueAdapter.getQueueItem(0);
+            String[] script = item.getScript_body().split("\n");
+            Interpreter interpreter = new Interpreter(script, hid_path);
+            interpreter.run();
+        } else {
+
+        }
     }
 }

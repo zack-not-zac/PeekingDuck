@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Interpreter {
-    private ArrayList<String> script;
+    private String[] script;
     private int default_delay = 50;
     private String script_path;
     private static final HashMap<Character, String> key_map = new HashMap<Character, String>() {{ // UK Keyboard
@@ -51,7 +51,7 @@ public class Interpreter {
     private String last_cmd = "";
     private String last_str = "";
 
-    public Interpreter(ArrayList<String> script, String script_path) {
+    public Interpreter(String[] script, String script_path) {
         this.script_path = script_path;
         this.script = script;
         Log.d("SCRIPT", "Script Path: " + script_path);
@@ -69,8 +69,8 @@ public class Interpreter {
                     e.printStackTrace();
                 }
                 DataOutputStream os = new DataOutputStream(process.getOutputStream());
-                for(int i = 0; i < script.size(); i++ ) {
-                    String line = script.get(i);
+                for(int i = 0; i < script.length; i++ ) {
+                    String line = script[i];
                     int index = line.indexOf(' ');
                     String cmd = index > -1 ? line.substring(0, index) : line;
                     String param = index > -1 ? line.substring(index+1) : "";
@@ -261,38 +261,36 @@ public class Interpreter {
                     e.printStackTrace();
                 }
             }
+
+            private void send_key(String key, DataOutputStream os) {
+                Log.d("SCRIPT", "Sending Key Seq: " + key);
+                try{
+                    os.writeBytes("echo " + key + " | " + script_path + " /dev/hidg0 keyboard\n");
+                    os.flush();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            private void send_string(String str, DataOutputStream os) {
+                Log.d("SCRIPT", "Sending String: " + str);
+                char[] keys = str.toCharArray();
+
+                for (int i = 0; i < keys.length; i++) {
+                    String key_seq;
+                    if(key_map.containsKey(keys[i])) {
+                        key_seq = key_map.get(keys[i]);
+                    }
+                    else if((int) keys[i] > 64 && (int) keys[i] < 91){ // Uppercase character (A-Z)
+                        key_seq = "left-shift " + ("" + keys[i]).toLowerCase();
+                    }
+                    else {
+                        key_seq = "" + keys[i];
+                    }
+
+                    send_key(key_seq, os);
+                }
+            }
         });
     }
-
-    private void send_key(String key, DataOutputStream os) {
-        Log.d("SCRIPT", "Sending Key Seq: " + key);
-        try{
-            os.writeBytes("echo " + key + " | " + script_path + " /dev/hidg0 keyboard\n");
-            os.flush();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    private void send_string(String str, DataOutputStream os) {
-        Log.d("SCRIPT", "Sending String: " + str);
-        char[] keys = str.toCharArray();
-
-        for (int i = 0; i < keys.length; i++) {
-            String key_seq;
-            if(key_map.containsKey(keys[i])) {
-                key_seq = key_map.get(keys[i]);
-            }
-            else if((int) keys[i] > 64 && (int) keys[i] < 91){ // Uppercase character (A-Z)
-                key_seq = "left-shift " + ("" + keys[i]).toLowerCase();
-            }
-            else {
-                key_seq = "" + keys[i];
-            }
-
-            send_key(key_seq, os);
-        }
-    }
-
-
 }

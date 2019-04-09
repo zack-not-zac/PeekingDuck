@@ -8,7 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Script.class,QueueItem.class},version = 6, exportSchema = false)   //represents the Room database
+@Database(entities = {Script.class,QueueItem.class},version = 1, exportSchema = false)   //represents the Room database
 public abstract class ScriptDatabase extends RoomDatabase
 {
     private static ScriptDatabase instance;
@@ -51,13 +51,14 @@ public abstract class ScriptDatabase extends RoomDatabase
 
         @Override
         protected Void doInBackground(Void... voids) {      //Default db values
-            scriptDao.insert(new Script("Title 1", "Path 1"));
-            scriptDao.insert(new Script("Title 2", "Path 2"));
+//            scriptDao.insert(new Script("Title 1", "Path 1"));
+//            scriptDao.insert(new Script("Title 2", "Path 2"));
+            scriptDao.insert(new Script("Hello World", "scripts/helloworld.txt"));
 
-            queueDao.addToQueue(new QueueItem("Test Script 1",0));
-            queueDao.addToQueue(new QueueItem("Test Script 2",1));
-            queueDao.addToQueue(new QueueItem("Test Script 3",2));
-            queueDao.addToQueue(new QueueItem("Test Script 4",3));
+//            queueDao.addToQueue(new QueueItem("Test Script 1", "", 0));
+//            queueDao.addToQueue(new QueueItem("Test Script 2", "", 1));
+//            queueDao.addToQueue(new QueueItem("Test Script 3", "", 2));
+//            queueDao.addToQueue(new QueueItem("Test Script 4", "",3));
             return null;
         }
     }

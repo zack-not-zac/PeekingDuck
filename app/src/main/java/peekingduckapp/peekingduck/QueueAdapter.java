@@ -81,11 +81,9 @@ public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHol
         public void bindView(int position)
         {
             QueueItem item = queue.get(position);
-            String script_body = item.getScript_body();
-            int pos = item.getPos();
 
-            ItemText.setText(script_body);   //Sets the TextView to the output from reading the database
-            queue_txt.setText(String.valueOf(pos));
+            ItemText.setText(item.getScript_name());   //Sets the TextView to the output from reading the database
+            queue_txt.setText("" + item.getPos());
         }
     }
 

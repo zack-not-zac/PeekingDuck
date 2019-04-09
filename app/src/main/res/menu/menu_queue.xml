@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/queue_run"
+        android:orderInCategory="300"
+        android:title="Run"
+        android:tooltipText="Run"
+        android:icon="@drawable/ic_play_arrow"
+        android:iconTint="@color/accent"
+        app:showAsAction="ifRoom"/>
+</menu>
