@@ -8,7 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Script.class,QueueItem.class},version = 6)   //represents the Room database
+@Database(entities = {Script.class,QueueItem.class},version = 6, exportSchema = false)   //represents the Room database
 public abstract class ScriptDatabase extends RoomDatabase
 {
     private static ScriptDatabase instance;
