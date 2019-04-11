@@ -2,10 +2,13 @@ package peekingduckapp.peekingduck;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -29,6 +32,7 @@ public class FragmentQueue extends Fragment {
     private QueueAdapter queueAdapter;
     private ScriptViewModel scriptVM;
     private String hid_path;
+    private FloatingActionButton fab;
 
     public FragmentQueue() {
 
@@ -45,6 +49,8 @@ public class FragmentQueue extends Fragment {
         script_recyclerview = view.findViewById(R.id.script_recycler_view);
         script_recyclerview.setLayoutManager(layoutManager);
 
+        fab = view.findViewById(R.id.fab);
+        //fab.setVisibility(View.GONE);
         activity.getSupportActionBar().setTitle("Script Queue");
 
         queueAdapter = new QueueAdapter();
@@ -113,6 +119,9 @@ public class FragmentQueue extends Fragment {
         switch(item.getItemId()) {
             case R.id.queue_run:
                 run_queue();
+                return true;
+            case R.id.queue_delete:
+                clear_queue();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -188,5 +197,20 @@ public class FragmentQueue extends Fragment {
         } else {
             Toast.makeText(getActivity(), "No items in queue to run", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void clear_queue() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Confirm")
+                .setMessage("Are you sure you wish to clear the queue?")
+                .setIcon(R.drawable.ic_delete)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getActivity(), "Clearing Queue", Toast.LENGTH_LONG).show();
+                        scriptVM.removeAllFromQueue();
+                    }
+                })
+                .setNegativeButton("No", null).show();
     }
 }

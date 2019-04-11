@@ -54,6 +54,7 @@ public abstract class ScriptDatabase extends RoomDatabase
 //            scriptDao.insert(new Script("Title 1", "Path 1"));
 //            scriptDao.insert(new Script("Title 2", "Path 2"));
             scriptDao.insert(new Script("Hello World", "scripts/helloworld.txt"));
+            scriptDao.insert(new Script("File Copy", "scripts/filecopy.txt"));
 
 //            queueDao.addToQueue(new QueueItem("Test Script 1", "", 0));
 //            queueDao.addToQueue(new QueueItem("Test Script 2", "", 1));

@@ -5,6 +5,7 @@ import android.os.Environment;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -38,5 +39,23 @@ public class FileHandler {
         }
 
         return sb.toString();
+    }
+
+    public static void save_file_to_external_storage(String name, String content) {
+        File file = new File(path + "/" + name);
+        File folder = file.getParentFile();
+        if(!folder.isDirectory()) folder.mkdirs();
+        if(file.exists()) file.delete();
+        try {
+            file.createNewFile();
+            FileOutputStream out = new FileOutputStream(file);
+            out.write(content.getBytes());
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -5,21 +5,25 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
-public class FragmentScripts extends Fragment {
+public class FragmentScripts extends Fragment implements View.OnClickListener {
     private RecyclerView script_recyclerview;
     private RecyclerView.LayoutManager layoutManager;
     private ScriptAdapter scriptAdapter;
     private ScriptViewModel scriptVM;
+    private TextView no_scripts;
+    private FloatingActionButton fab;
 
     public FragmentScripts() {
 
@@ -34,6 +38,9 @@ public class FragmentScripts extends Fragment {
 
         layoutManager = new LinearLayoutManager(activity);
         script_recyclerview = view.findViewById(R.id.script_recycler_view);
+        no_scripts = view.findViewById(R.id.no_scripts);
+        fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
         script_recyclerview.setLayoutManager(layoutManager);
 
         activity.getSupportActionBar().setTitle("Script");
@@ -46,6 +53,7 @@ public class FragmentScripts extends Fragment {
             @Override
             public void onChanged(@Nullable List<Script> scripts) {
                 scriptAdapter.setScripts(scripts);
+                toggle_view(scripts.size() == 0);
             }
         });
 
@@ -69,5 +77,19 @@ public class FragmentScripts extends Fragment {
         });
 
         return view;
+    }
+
+    private void toggle_view(boolean isEmpty) {
+        script_recyclerview.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        no_scripts.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.fab:
+                ((MainActivity)getActivity()).add_new_script();
+                break;
+        }
     }
 }

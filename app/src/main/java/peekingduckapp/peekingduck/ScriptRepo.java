@@ -55,11 +55,34 @@ public class ScriptRepo {
     {
         new RemoveFromQueueAsyncTask(queueDao).execute(item);
     }
+
     public LiveData<List<QueueItem>> viewQueue()
     {
         return queue;
     }
 
+    public void deleteAllFromQueue(){
+        new deleteAllFromQueueAsyncTask(queueDao).execute();
+    }
+
+    public int countQueueItems() {
+        return queueDao.countQueueItems().getValue();
+    }
+
+    private static class deleteAllFromQueueAsyncTask extends AsyncTask<String, Void, Void>
+    {
+        private QueueDao queueDao;
+
+        private deleteAllFromQueueAsyncTask (QueueDao queueDao) {
+            this.queueDao = queueDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            queueDao.deleteAllQueue();
+            return null;
+        }
+    }
 
 
     //ASynchronous tasks must be used to use multi-threading and create a mutex so that multiple threads don't update the table at once

@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentScripts viewScriptsFragment;
     private FragmentQueue queueFragment;
     private FragmentEdit editFragment;
+    private FragmentAdd addFragment;
     private boolean useQueueAdapter;
     NavigationView navigationView;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         viewScriptsFragment = new FragmentScripts();
         queueFragment = new FragmentQueue();
         editFragment = new FragmentEdit();
+        addFragment = new FragmentAdd();
 
         // ----------------------------- STUFF FOR NAV DRAWER - ALL CODE SHOULD BE ADDED UNDERNEATH ---------------------------------------
         //replaces default ActionBar
@@ -72,9 +74,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_queue:
                         fragmentManager.beginTransaction().replace(R.id.fragment_container,queueFragment).addToBackStack(null).commit();
                         return true;
-                    case R.id.nav_interpreter:
-                        Intent intent = new Intent(MainActivity.this, InterpreterActivity.class);
-                        startActivity(intent);
+                    case R.id.nav_add_new:
+                        fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commit();
                         return true;
 
                 }
@@ -130,5 +131,9 @@ public class MainActivity extends AppCompatActivity {
         else {
             super.onBackPressed();
         }
+    }
+
+    public void add_new_script() {
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commit();
     }
 }

@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class Interpreter {
     private String[] script;
     private int default_delay = 50;
-    private String script_path;
+    private String hid_path;
     private static final HashMap<Character, String> key_map = new HashMap<Character, String>() {{ // UK Keyboard
         put(' ', "space");
         put('\n', "enter");
@@ -51,10 +51,10 @@ public class Interpreter {
     private String last_cmd = "";
     private String last_str = "";
 
-    public Interpreter(String[] script, String script_path) {
-        this.script_path = script_path;
+    public Interpreter(String[] script, String hid_path) {
+        this.hid_path = hid_path;
         this.script = script;
-        Log.d("SCRIPT", "Script Path: " + script_path);
+        Log.d("SCRIPT", "Script Path: " + hid_path);
     }
 
     public void run() {
@@ -265,7 +265,7 @@ public class Interpreter {
             private void send_key(String key, DataOutputStream os) {
                 Log.d("SCRIPT", "Sending Key Seq: " + key);
                 try{
-                    os.writeBytes("echo " + key + " | " + script_path + " /dev/hidg0 keyboard\n");
+                    os.writeBytes("echo " + key + " | " + hid_path + " /dev/hidg0 keyboard\n");
                     os.flush();
                 }catch (IOException e){
                     e.printStackTrace();

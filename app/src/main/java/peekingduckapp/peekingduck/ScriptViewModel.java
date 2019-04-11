@@ -50,6 +50,10 @@ public class ScriptViewModel extends AndroidViewModel {
         repo.removeFromQueue(item);
     }
 
+    public void removeAllFromQueue() {
+        repo.deleteAllFromQueue();
+    }
+
     public LiveData<List<QueueItem>> viewQueue()
     {
         return queue;

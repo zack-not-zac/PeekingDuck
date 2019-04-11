@@ -21,6 +21,12 @@ public interface QueueDao {
     @Delete
     void removeFromQueue(QueueItem item);
 
+    @Query("DELETE FROM queue_table")
+    void deleteAllQueue();
+
+    @Query("SELECT count(*) FROM queue_table")
+    LiveData<Integer> countQueueItems();
+
     @Query("SELECT * FROM queue_table ORDER BY pos ASC")
     LiveData<List<QueueItem>> viewQueue();
 }
