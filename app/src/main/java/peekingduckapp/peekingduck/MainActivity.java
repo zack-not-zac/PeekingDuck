@@ -2,6 +2,7 @@ package peekingduckapp.peekingduck;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 import android.view.MenuItem;
 
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentAdd addFragment;
     private boolean useQueueAdapter;
     NavigationView navigationView;
+    private static final int FILE_SELECT_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.nav_add_new:
                         fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commit();
+                        return true;
+                    case R.id.nav_load_new:
+                        showFileChooser();
                         return true;
 
                 }
@@ -133,7 +139,52 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    // Get the Uri of the selected file
+                    Uri uri = data.getData();
+                    Log.d("FILE", "File Uri: " + uri.toString());
+                    // Get the path
+                    Log.d("FILE", "File Path: " + uri.getPath());
+                    // Get the file instance
+                    // File file = new File(path);
+                    // Initiate the upload
+                    String path = uri.getPath();
+                    if(path != null) {
+                        int index = path.indexOf(":");
+                        if(index > -1) {
+                            path = path.substring(index + 1);
+                            Log.d("FILE", "New Path: " + path);
+                            fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commitAllowingStateLoss();
+                            addFragment.set_file_path(path);
+                        }
+                    }
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     public void add_new_script() {
         fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commit();
+    }
+
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(
+                    Intent.createChooser(intent, "Select a File to Upload"),
+                    FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(this, "Please install a File Manager.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }

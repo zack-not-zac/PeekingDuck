@@ -19,7 +19,11 @@
         <menu>
             <item android:id="@+id/nav_add_new"
                 android:icon="@drawable/ic_add"
-                android:title="Add New Script"/>
+                android:title="Create New Script"/>
+            <item android:id="@+id/nav_load_new"
+                android:icon="@drawable/ic_file"
+                android:title="Load New Script"
+                />
             <item android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings"
                 android:title="Settings" />

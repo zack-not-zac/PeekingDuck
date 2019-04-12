@@ -21,6 +21,7 @@ public class FragmentAdd extends Fragment {
     private EditText text_name;
     private EditText text_script;
     private ScriptViewModel scriptVM;
+    private String payload = "";
 
     public FragmentAdd() {}
 
@@ -34,6 +35,8 @@ public class FragmentAdd extends Fragment {
 
         text_name = view.findViewById(R.id.add_name);
         text_script = view.findViewById(R.id.add_payload);
+
+        text_script.setText(payload);
 
         return view;
     }
@@ -62,11 +65,16 @@ public class FragmentAdd extends Fragment {
             Toast.makeText(getActivity(), "Invalid name / script.", Toast.LENGTH_LONG).show();
         } else {
             String file_name = "scripts/" + script_name.toLowerCase() + ".txt";
-            FileHandler.save_file_to_external_storage(script_name, script_payload);
+            FileHandler.save_file_to_external_storage(file_name, script_payload);
             Script script = new Script(script_name, file_name);
             scriptVM.insert(script);
             Toast.makeText(getActivity(), "Script Added", Toast.LENGTH_LONG).show();
             getFragmentManager().popBackStack();
         }
+    }
+
+    public void set_file_path(String path) {
+        String content = FileHandler.load_from_external_storage(path);
+        this.payload = content;
     }
 }

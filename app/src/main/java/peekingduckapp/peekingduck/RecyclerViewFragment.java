@@ -104,7 +104,7 @@ public class RecyclerViewFragment extends Fragment {
                     //TODO: code for onClick goes here
 
                     Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_SHORT).show();
-                    QueueItem item = new QueueItem(script.getScript_name(), FileHandler.load_from_external_storage(script.getScript_path()), 0);
+                    QueueItem item = new QueueItem(script.getScript_name(), FileHandler.load_from_app_external_storage(script.getScript_path()), 0);
                     scriptVM.addToQueue(item);
                 }
             });

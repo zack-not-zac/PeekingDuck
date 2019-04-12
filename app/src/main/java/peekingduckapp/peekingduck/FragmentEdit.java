@@ -30,13 +30,14 @@ public class FragmentEdit extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_script, container, false);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
 
         MainActivity activity = (MainActivity) getActivity();
 
         activity.getSupportActionBar().setTitle("Script Editor");
 
         textField = view.findViewById(R.id.edit_script_text);
-        textField.setText(FileHandler.load_from_external_storage(script.getScript_path()));
+        textField.setText(FileHandler.load_from_app_external_storage(script.getScript_path()));
 
         scriptVM = ViewModelProviders.of(this).get(ScriptViewModel.class);
 
@@ -64,7 +65,7 @@ public class FragmentEdit extends Fragment {
     }
 
     private void add_to_queue() {
-        QueueItem item = new QueueItem(script.getScript_name(), FileHandler.load_from_external_storage(script.getScript_path()), 0);
+        QueueItem item = new QueueItem(script.getScript_name(), FileHandler.load_from_app_external_storage(script.getScript_path()), 0);
         scriptVM.addToQueue(item);
 
         Toast.makeText(getContext(), "Script added to the queue", Toast.LENGTH_LONG).show();
