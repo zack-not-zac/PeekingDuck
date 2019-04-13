@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean useQueueAdapter;
     NavigationView navigationView;
     private static final int FILE_SELECT_CODE = 0;
+    private String loaded_payload_path = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,14 +159,23 @@ public class MainActivity extends AppCompatActivity {
                         if(index > -1) {
                             path = path.substring(index + 1);
                             Log.d("FILE", "New Path: " + path);
-                            fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commitAllowingStateLoss();
-                            addFragment.set_file_path(path);
+                            loaded_payload_path = path;
                         }
                     }
                 }
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onPostResume() {
+        super.onPostResume();
+        if(loaded_payload_path != null) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commit();
+            addFragment.set_file_path(loaded_payload_path);
+            loaded_payload_path = null;
+        }
     }
 
     public void add_new_script() {

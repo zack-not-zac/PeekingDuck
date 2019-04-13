@@ -3,10 +3,12 @@ package peekingduckapp.peekingduck;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -45,7 +47,7 @@ public class FragmentScripts extends Fragment implements View.OnClickListener {
 
         activity.getSupportActionBar().setTitle("Script");
 
-        scriptAdapter = new ScriptAdapter();
+        scriptAdapter = new ScriptAdapter(getContext());
         script_recyclerview.setAdapter(scriptAdapter);
 
         scriptVM = ViewModelProviders.of(this).get(ScriptViewModel.class);
@@ -60,7 +62,6 @@ public class FragmentScripts extends Fragment implements View.OnClickListener {
         scriptAdapter.setOnItemClickedListener(new ScriptAdapter.onItemClickedListener() {
             @Override
             public void onItemClick(Script script) {
-                //TODO: Open Script Editor
                 //QueueItem item = new QueueItem(script.getScript_name(), FileHandler.load_from_external_storage(script.getScript_path()), 0);
                 //scriptVM.addToQueue(item);
                 activity.switch_fragment_to_edit(script);
@@ -71,7 +72,7 @@ public class FragmentScripts extends Fragment implements View.OnClickListener {
 
         scriptAdapter.setOnDeleteClickedListener(new ScriptAdapter.deleteBtnClickedListener() {
             @Override
-            public void onDeleteClick(Script script) {
+            public void onDeleteClick(final Script script) {
                 scriptVM.delete(script);
             }
         });

@@ -1,12 +1,16 @@
 package peekingduckapp.peekingduck;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,11 @@ public class ScriptAdapter extends RecyclerView.Adapter<ScriptAdapter.ListViewHo
     private ImageButton delete_btn;
     private deleteBtnClickedListener delete_listener;
     private TextView queue_txt;
+    private Context context;
+
+    public ScriptAdapter(Context c) {
+        this.context = c;
+    }
 
     @NonNull
     @Override
@@ -86,9 +95,26 @@ public class ScriptAdapter extends RecyclerView.Adapter<ScriptAdapter.ListViewHo
             delete_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    delete_listener.onDeleteClick(scripts.get(pos));
-                    notifyItemRemoved(pos);
+                    if(context != null) {
+                        new AlertDialog.Builder(context)
+                                .setTitle("Confirm")
+                                .setMessage("Are you sure you wish to delete this script?")
+                                .setIcon(R.drawable.ic_delete)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        int pos = getAdapterPosition();
+                                        delete_listener.onDeleteClick(scripts.get(pos));
+                                        notifyItemRemoved(pos);
+                                    }
+                                })
+                                .setNegativeButton("No", null).show();
+                    } else {
+                        int pos = getAdapterPosition();
+                        delete_listener.onDeleteClick(scripts.get(pos));
+                        notifyItemRemoved(pos);
+                    }
+
                 }
             });
         }

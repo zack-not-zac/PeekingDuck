@@ -4,6 +4,7 @@ package peekingduckapp.peekingduck;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +26,6 @@ public class FragmentAdd extends Fragment {
 
     public FragmentAdd() {}
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add, container, false);
@@ -36,9 +36,15 @@ public class FragmentAdd extends Fragment {
         text_name = view.findViewById(R.id.add_name);
         text_script = view.findViewById(R.id.add_payload);
 
-        text_script.setText(payload);
-
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("SCRIPT", "onResume payload: " + payload);
+        text_script.setText(payload);
+        payload = "";
     }
 
     @Override
@@ -75,6 +81,11 @@ public class FragmentAdd extends Fragment {
 
     public void set_file_path(String path) {
         String content = FileHandler.load_from_external_storage(path);
+        Log.d("SCRIPT", "Setting payload: " + content);
         this.payload = content;
+        if(text_script != null) {
+            Log.d("SCRIPT", "Text null");
+            text_script.setText(payload);
+        }
     }
 }

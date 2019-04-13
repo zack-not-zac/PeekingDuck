@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,13 +27,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-public class FragmentQueue extends Fragment {
+public class FragmentQueue extends Fragment implements Callback {
     private RecyclerView script_recyclerview;
     private RecyclerView.LayoutManager layoutManager;
     private QueueAdapter queueAdapter;
     private ScriptViewModel scriptVM;
     private String hid_path;
     private FloatingActionButton fab;
+    private int queue_position = 0;
+    private Interpreter interpreter;
 
     public FragmentQueue() {
 
@@ -50,7 +53,7 @@ public class FragmentQueue extends Fragment {
         script_recyclerview.setLayoutManager(layoutManager);
 
         fab = view.findViewById(R.id.fab);
-        //fab.setVisibility(View.GONE);
+        fab.hide();
         activity.getSupportActionBar().setTitle("Script Queue");
 
         queueAdapter = new QueueAdapter();
@@ -189,11 +192,12 @@ public class FragmentQueue extends Fragment {
 
     private void run_queue() {
         unbundle_file();
+        queue_position = 0;
         if(queueAdapter.getItemCount() > 0) {
-            QueueItem item = queueAdapter.getQueueItem(0);
-            String[] script = item.getScript_body().split("\n");
-            Interpreter interpreter = new Interpreter(script, hid_path);
-            interpreter.run();
+            QueueItem item = queueAdapter.getQueueItem(queue_position);
+            String script = item.getScript_body();
+            interpreter = new Interpreter(hid_path, this);
+            interpreter.run(script, 0);
         } else {
             Toast.makeText(getActivity(), "No items in queue to run", Toast.LENGTH_LONG).show();
         }
@@ -212,5 +216,16 @@ public class FragmentQueue extends Fragment {
                     }
                 })
                 .setNegativeButton("No", null).show();
+    }
+
+    @Override
+    public void run_next_queue_item() {
+        queue_position++;
+        Log.d("SCRIPT", "Running next queue item " + queue_position + " / " + queueAdapter.getItemCount());
+        if(queue_position < queueAdapter.getItemCount()) {
+            QueueItem item = queueAdapter.getQueueItem(queue_position);
+            String script = item.getScript_body();
+            interpreter.run(script, 1500);
+        }
     }
 }
