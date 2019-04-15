@@ -1,8 +1,13 @@
 package peekingduckapp.peekingduck;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -36,6 +41,36 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     private static final int FILE_SELECT_CODE = 0;
     private String loaded_payload_path = null;
+
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Log.v("PlugInReceiver", "Action: " + action);
+            Log.v("PlugInReceiver", "Context: " + context);
+            Bundle extras = intent.getExtras();
+            Log.v("PLUG", "Extras: " + extras);
+
+            queueFragment.usb_state_change(action.equals(Intent.ACTION_POWER_CONNECTED));
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.intent.action.ACTION_POWER_CONNECTED");
+        filter.addAction("android.intent.action.ACTION_POWER_DISCONNECTED");
+        registerReceiver(receiver, filter);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(receiver);
+        super.onPause();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +138,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         request_permissions();
+
+        Intent battery = registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        int status = battery.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        if(status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL) {
+            int plug = battery.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+            if(plug == BatteryManager.BATTERY_PLUGGED_USB) {
+                queueFragment.usb_state_change(true);
+            }
+        }
     }
 
     private void request_permissions() {

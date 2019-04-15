@@ -2,7 +2,11 @@ package peekingduckapp.peekingduck;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,6 +40,8 @@ public class FragmentQueue extends Fragment implements Callback {
     private FloatingActionButton fab;
     private int queue_position = 0;
     private Interpreter interpreter;
+    private boolean is_connected = false;
+    private boolean run_queue_on_connect = false;
 
     public FragmentQueue() {
 
@@ -191,15 +197,38 @@ public class FragmentQueue extends Fragment implements Callback {
     }
 
     private void run_queue() {
+        run_queue(0);
+    }
+
+    private void run_queue(int delay) {
         unbundle_file();
-        queue_position = 0;
-        if(queueAdapter.getItemCount() > 0) {
-            QueueItem item = queueAdapter.getQueueItem(queue_position);
-            String script = item.getScript_body();
-            interpreter = new Interpreter(hid_path, this);
-            interpreter.run(script, 0);
+        if(is_connected) {
+            queue_position = 0;
+            if(queueAdapter.getItemCount() > 0) {
+                QueueItem item = queueAdapter.getQueueItem(queue_position);
+                String script = item.getScript_body();
+                interpreter = new Interpreter(hid_path, this);
+                interpreter.run(script, delay);
+            } else {
+                Toast.makeText(getActivity(), "No items in queue to run", Toast.LENGTH_LONG).show();
+            }
         } else {
-            Toast.makeText(getActivity(), "No items in queue to run", Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Not connected")
+                    .setMessage("You currently aren't connected to a P.C.\nWould you like to run on connect?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            run_queue_on_connect = true;
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            run_queue_on_connect = false;
+                        }
+                    }).show();
+            Toast.makeText(getContext(), "You are not connected", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -226,6 +255,16 @@ public class FragmentQueue extends Fragment implements Callback {
             QueueItem item = queueAdapter.getQueueItem(queue_position);
             String script = item.getScript_body();
             interpreter.run(script, 1500);
+        }
+    }
+
+    public void usb_state_change(boolean connected) {
+        this.is_connected = connected;
+        if(is_connected && run_queue_on_connect) {
+            //TODO: Ask team if this should be reset on first run or not
+            run_queue_on_connect = false;
+            //TODO: Make this delay a setting
+            run_queue(5000);
         }
     }
 }
