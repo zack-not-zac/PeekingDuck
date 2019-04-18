@@ -261,7 +261,6 @@ public class FragmentQueue extends Fragment implements Callback {
     public void usb_state_change(boolean connected) {
         this.is_connected = connected;
         if(is_connected && run_queue_on_connect) {
-            //TODO: Ask team if this should be reset on first run or not
             run_queue_on_connect = false;
             //TODO: Make this delay a setting
             run_queue(5000);

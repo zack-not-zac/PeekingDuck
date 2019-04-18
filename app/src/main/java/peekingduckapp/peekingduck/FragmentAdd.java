@@ -44,6 +44,7 @@ public class FragmentAdd extends Fragment {
         super.onResume();
         Log.d("SCRIPT", "onResume payload: " + payload);
         text_script.setText(payload);
+        text_name.setText("");
         payload = "";
     }
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Interpreter {
-    private int default_delay = 50;
+    private int default_delay = 0;
     private String hid_path;
     private Callback callback;
     private static final HashMap<Character, String> key_map = new HashMap<Character, String>() {{ // UK Keyboard
@@ -55,7 +55,7 @@ public class Interpreter {
     public Interpreter(String hid_path, FragmentQueue queue) {
         this.hid_path = hid_path;
         this.callback = queue;
-        Log.d("SCRIPT", "Script Path: " + hid_path);
+        //Log.d("SCRIPT", "Script Path: " + hid_path);
     }
 
     public void run(final String script, final int delay) {
@@ -68,7 +68,7 @@ public class Interpreter {
     }
 
     private void send_key(String key, DataOutputStream os) {
-        Log.d("SCRIPT", "Sending Key Seq: " + key);
+        //Log.d("SCRIPT", "Sending Key Seq: " + key);
         try{
             os.writeBytes("echo " + key + " | " + hid_path + " /dev/hidg0 keyboard\n");
             os.flush();
@@ -78,7 +78,7 @@ public class Interpreter {
     }
 
     private void send_string(String str, DataOutputStream os) {
-        Log.d("SCRIPT", "Sending String: " + str);
+        //Log.d("SCRIPT", "Sending String: " + str);
         char[] keys = str.toCharArray();
 
         for (int i = 0; i < keys.length; i++) {
@@ -114,19 +114,23 @@ public class Interpreter {
                 int index = line.indexOf(' ');
                 String cmd = index > -1 ? line.substring(0, index) : line;
                 String param = index > -1 ? line.substring(index+1) : "";
+
+                if(!cmd.equals("STRING")) {
+                    param = param.trim();
+                }
 //                    Log.d("SCRIPT", "Line: " + line);
 //                    Log.d("SCRIPT", "Command: " + cmd);
 //                    Log.d("SCRIPT", "Param: " + param);
 
                 if(cmd.equals("DEFAULT_DELAY") || cmd.equals("DEFAULTDELAY")) {
                     last_cmd = cmd;
-                    default_delay = Integer.parseInt(param); // TODO: Validate input
+                    default_delay = Integer.parseInt(param.trim()); // TODO: Validate input
                 } else if(cmd.equals("REM")) {
                     continue;
                 } else if(cmd.equals("DELAY")) {
                     last_cmd = cmd;
                     try {
-                        Thread.sleep(Integer.parseInt(param)); // TODO: Validate input
+                        Thread.sleep(Integer.parseInt(param.trim())); // TODO: Validate input
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -141,7 +145,7 @@ public class Interpreter {
                     last_cmd = "enter";
                     send_key(last_cmd, os);
                 } else if(cmd.equals("APP") || cmd.equals("MENU")) { // Simulates a right click
-                    last_cmd = "menu";
+                        last_cmd = "left-shift f10";
                     send_key(last_cmd, os);
                 } else if(cmd.equals("SHIFT")) {
                     if(param.equals("DELETE") || param.equals("END") || param.equals("HOME") || param.equals("INSERT") || param.equals("PAGEUP") || param.equals("PAGEDOWN") || param.equals("SPACE") || param.equals("TAB")){
@@ -150,6 +154,9 @@ public class Interpreter {
                     } else if(param.indexOf("WINDOWS ") == 0 || param.indexOf("GUI ") == 0) {
                         char ch = Character.toLowerCase(param.charAt(param.indexOf(" ") + 1));
                         last_cmd = "left-shift left-meta " + ch;
+                        send_key(last_cmd, os);
+                    } else if(param.equals("F1") || param.equals("F2") || param.equals("F3") || param.equals("F4") || param.equals("F5") || param.equals("F6") || param.equals("F7") || param.equals("F8") || param.equals("F9") || param.equals("F10") || param.equals("F11") || param.equals("F12")) {
+                        last_cmd = "left-shift " + param.toLowerCase();
                         send_key(last_cmd, os);
                     } else if(param.equals("UPARROW")) {
                         last_cmd = "left-shift up";
@@ -189,7 +196,7 @@ public class Interpreter {
                     } else if(param.equals("F1") || param.equals("F2") || param.equals("F3") || param.equals("F4") || param.equals("F5") || param.equals("F6") || param.equals("F7") || param.equals("F8") || param.equals("F9") || param.equals("F10") || param.equals("F11") || param.equals("F12")) {
                         last_cmd = "left-ctrl " + param.toLowerCase();
                         send_key(last_cmd, os);
-                    } else if(param.equals("ESCAPSE") || param.equals("ESC")) {
+                    } else if(param.equals("ESCAPE") || param.equals("ESC")) {
                         last_cmd = "left-ctrl escape";
                         send_key(last_cmd, os);
                     } else if(param.equals("")) {
@@ -271,19 +278,26 @@ public class Interpreter {
                     }
                 } else if(cmd.equals("REPEAT")) {
                     if(last_cmd.equals("DELAY") || last_cmd.equals("DEFAULTDELAY") || cmd.equals("DEFAULT_DELAY")) {
-                        Log.e("SCRIPT", "Invalid REPEAT: Cannot repeat DELAY or DEFAULTDELAY");
+                        //Log.e("SCRIPT", "Invalid REPEAT: Cannot repeat DELAY or DEFAULTDELAY");
                     } else {
-                        int repeat_count = Integer.parseInt(param); //TODO: Validate input
+                        int repeat_count = Integer.parseInt(param.trim()); //TODO: Validate input
                         for(int j = 0; j < repeat_count; j++) {
                             if(last_cmd.equals("STRING")) {
                                 send_string(last_str, os);
                             } else {
                                 send_key(last_cmd, os);
                             }
+                            if(default_delay > 0 && i < repeat_count - 1) {
+                                try {
+                                    Thread.sleep(default_delay);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
                     }
                 } else if(!cmd.equals("")) {
-                    Log.e("SCRIPT", "Unknown command: " + cmd);
+                    //Log.e("SCRIPT", "Unknown command: " + cmd);
                 }
 
                 if(default_delay > 0) {
