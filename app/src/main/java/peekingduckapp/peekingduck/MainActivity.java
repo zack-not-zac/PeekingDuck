@@ -216,8 +216,8 @@ public class MainActivity extends AppCompatActivity {
     public void onPostResume() {
         super.onPostResume();
         if(loaded_payload_path != null) {
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commit();
             addFragment.set_file_path(loaded_payload_path);
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commit();
             loaded_payload_path = null;
         }
     }
@@ -226,19 +226,21 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commit();
     }
 
+    public void edit_queue_item(QueueItem item) {
+        editFragment.setQueueItem(item);
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, editFragment).addToBackStack(null).commit();
+    }
+
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
         try {
-            startActivityForResult(
-                    Intent.createChooser(intent, "Select a File to Upload"),
-                    FILE_SELECT_CODE);
+            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
         } catch (android.content.ActivityNotFoundException ex) {
             // Potentially direct the user to the Market with a Dialog
-            Toast.makeText(this, "Please install a File Manager.",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
     }
 }

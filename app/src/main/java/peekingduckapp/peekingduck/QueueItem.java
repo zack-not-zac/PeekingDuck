@@ -34,7 +34,6 @@ public class QueueItem {
         this.script_body = script_body;
     }
 
-
     public int getID() {
         return ID;
     }

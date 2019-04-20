@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
 import java.util.List;
 
 public class FragmentQueue extends Fragment implements Callback {
@@ -52,7 +53,7 @@ public class FragmentQueue extends Fragment implements Callback {
         View view = inflater.inflate(R.layout.fragment_view_scripts, container, false);
         setHasOptionsMenu(true);
 
-        MainActivity activity = (MainActivity) getActivity();
+        final MainActivity activity = (MainActivity) getActivity();
 
         layoutManager = new LinearLayoutManager(activity);
         script_recyclerview = view.findViewById(R.id.script_recycler_view);
@@ -77,7 +78,8 @@ public class FragmentQueue extends Fragment implements Callback {
         queueAdapter.setOnItemClickedListener(new QueueAdapter.onItemClickedListener() {
             @Override
             public void onItemClick(QueueItem item) {
-                Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_SHORT).show();
+                activity.edit_queue_item(item);
             }
         });
 
@@ -93,18 +95,30 @@ public class FragmentQueue extends Fragment implements Callback {
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
                 int pos_dragged = dragged.getAdapterPosition();
                 int pos_target = target.getAdapterPosition();
-
                 QueueItem movedItem = queueAdapter.getQueueItem(dragged.getAdapterPosition());
+                QueueItem targetItem = queueAdapter.getQueueItem(target.getAdapterPosition());
+
                 movedItem.setPos(pos_target);
+                targetItem.setPos(pos_dragged);
+
+                queueAdapter.swap_queue_items(pos_dragged, pos_target);
+                queueAdapter.notifyItemMoved(pos_dragged, pos_target);
+
                 scriptVM.editQueueItem(movedItem);
+                scriptVM.editQueueItem(targetItem);
+//
 
-                Toast.makeText(getContext(),"New Queue Position: " + movedItem.getPos() + "\nOld Queue Position: " + pos_dragged, Toast.LENGTH_SHORT).show();
+//                movedItem.setPos(pos_target);
+//                targetItem.setPos(pos_dragged);
+//                scriptVM.editQueueItem(movedItem);
+//
+//                //Toast.makeText(getContext(),"New Queue Position: " + movedItem.getPos() + "\nOld Queue Position: " + pos_dragged, Toast.LENGTH_SHORT).show();
+//
+//                queueAdapter.notifyItemMoved(pos_dragged,pos_target);
 
-                queueAdapter.notifyItemMoved(pos_dragged,pos_target);
+                //reorderQueue(movedItem, pos_dragged, pos_target);
 
-                reorderQueue(movedItem, pos_dragged, pos_target);
-
-                return false;
+                return true;
             }
 
             @Override
@@ -250,8 +264,8 @@ public class FragmentQueue extends Fragment implements Callback {
     @Override
     public void run_next_queue_item() {
         queue_position++;
-        Log.d("SCRIPT", "Running next queue item " + queue_position + " / " + queueAdapter.getItemCount());
         if(queue_position < queueAdapter.getItemCount()) {
+//            Log.d("SCRIPT", "Running next queue item " + queue_position + " / " + queueAdapter.getItemCount());
             QueueItem item = queueAdapter.getQueueItem(queue_position);
             String script = item.getScript_body();
             interpreter.run(script, 1500);

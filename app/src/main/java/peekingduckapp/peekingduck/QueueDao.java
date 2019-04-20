@@ -24,9 +24,12 @@ public interface QueueDao {
     @Query("DELETE FROM queue_table")
     void deleteAllQueue();
 
-    @Query("SELECT count(*) FROM queue_table")
+    @Query("SELECT count(ID) FROM queue_table")
     LiveData<Integer> countQueueItems();
 
     @Query("SELECT * FROM queue_table ORDER BY pos ASC")
     LiveData<List<QueueItem>> viewQueue();
+
+    @Query("UPDATE queue_table SET script_body = :body WHERE ID = :id")
+    int updateScriptBody(String body, int id);
 }

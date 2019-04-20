@@ -66,7 +66,8 @@ public class ScriptRepo {
     }
 
     public int countQueueItems() {
-        return queueDao.countQueueItems().getValue();
+        List<QueueItem> items = queue.getValue();
+        return items == null ? 0 : items.size();
     }
 
     private static class deleteAllFromQueueAsyncTask extends AsyncTask<String, Void, Void>
@@ -80,6 +81,25 @@ public class ScriptRepo {
         @Override
         protected Void doInBackground(String... params) {
             queueDao.deleteAllQueue();
+            return null;
+        }
+    }
+
+    public void updateQueueItem(String body, int id) {
+        new updateQueueItem(queueDao, id).execute(body);
+    }
+
+    private static class updateQueueItem extends AsyncTask<String, Void, Void>
+    {
+        private QueueDao queueDao;
+        private int id;
+        private updateQueueItem(QueueDao queueDao, int id) {
+            this.queueDao = queueDao;
+            this.id = id;
+        }
+        @Override
+        protected Void doInBackground(String... params) {
+            queueDao.updateScriptBody(params[0], id);
             return null;
         }
     }

@@ -58,4 +58,12 @@ public class ScriptViewModel extends AndroidViewModel {
     {
         return queue;
     }
+
+    public void updateQueueItem(String body, int id) {
+        repo.updateQueueItem(body, id);
+    }
+
+    public int countQueueItems() {
+        return repo.countQueueItems();
+    }
 }

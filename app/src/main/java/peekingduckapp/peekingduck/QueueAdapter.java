@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHolder> {
@@ -81,6 +82,7 @@ public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHol
         public void bindView(int position)
         {
             QueueItem item = queue.get(position);
+            item.setPos(position);
 
             ItemText.setText(item.getScript_name());   //Sets the TextView to the output from reading the database
             queue_txt.setText("" + item.getPos());
@@ -100,5 +102,9 @@ public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHol
 
     public void setOnDeleteClickedListener(deleteBtnClickedListener delete_listener){
         this.delete_listener = delete_listener;
+    }
+
+    public void swap_queue_items(int dragged, int target) {
+        Collections.swap(queue, dragged, target);
     }
 }

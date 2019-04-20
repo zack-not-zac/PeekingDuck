@@ -22,6 +22,9 @@ public class FragmentEdit extends Fragment {
     private Script script;
     private EditText textField;
     private ScriptViewModel scriptVM;
+    private QueueItem queueItem;
+    private boolean edit_mode = false;
+    private MainActivity activity;
 
     public FragmentEdit() {}
 
@@ -32,12 +35,12 @@ public class FragmentEdit extends Fragment {
         setHasOptionsMenu(true);
 //        setRetainInstance(true);
 
-        MainActivity activity = (MainActivity) getActivity();
+        activity = (MainActivity) getActivity();
 
         activity.getSupportActionBar().setTitle("Script Editor");
 
         textField = view.findViewById(R.id.edit_script_text);
-        textField.setText(FileHandler.load_from_app_external_storage(script.getScript_path()));
+//        textField.setText(FileHandler.load_from_app_external_storage(script.getScript_path()));
 
         scriptVM = ViewModelProviders.of(this).get(ScriptViewModel.class);
 
@@ -46,14 +49,25 @@ public class FragmentEdit extends Fragment {
 
     @Override
     public void onResume() {
-        textField.setText(FileHandler.load_from_app_external_storage(script.getScript_path()));
+        if(!edit_mode) {
+            textField.setText(FileHandler.load_from_app_external_storage(script.getScript_path()));
+        } else if(edit_mode) {
+            textField.setText(queueItem.getScript_body());
+        }
         super.onResume();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_edit, menu);
+        MenuItem item = menu.findItem(R.id.edit_add);
+        item.setIcon(edit_mode ? R.drawable.ic_save : R.drawable.ic_add);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -68,14 +82,26 @@ public class FragmentEdit extends Fragment {
 
     public void setScript(Script script) {
         this.script = script;
+        this.edit_mode = false;
+    }
+
+    public void setQueueItem(QueueItem queueItem) {
+        this.queueItem = queueItem;
+        this.edit_mode = true;
     }
 
     private void add_to_queue() {
-        QueueItem item = new QueueItem(script.getScript_name(), textField.getText().toString(), 0);
-        scriptVM.addToQueue(item);
+        if(edit_mode) {
+            scriptVM.updateQueueItem(textField.getText().toString(), queueItem.getID());
+            queueItem.setScript_body(textField.getText().toString());
+            Toast.makeText(getContext(), "Queue Item saved", Toast.LENGTH_LONG).show();
+            activity.onBackPressed();
+        } else {
+            QueueItem item = new QueueItem(script.getScript_name(), textField.getText().toString(), scriptVM.countQueueItems());
+            scriptVM.addToQueue(item);
 
-        Toast.makeText(getContext(), "Script added to the queue", Toast.LENGTH_LONG).show();
-
+            Toast.makeText(getContext(), "Script added to the queue", Toast.LENGTH_LONG).show();
+        }
     }
 
 }

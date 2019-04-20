@@ -14,8 +14,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_file" />
-                            <entry key="sourceFile" value="C:\Users\amg\Downloads\baseline-insert_drive_file-24px.svg" />
+                            <entry key="outputName" value="ic_save" />
+                            <entry key="sourceFile" value="C:\Users\amg\Downloads\baseline-save-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>
