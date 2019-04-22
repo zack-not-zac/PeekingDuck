@@ -14,7 +14,7 @@ public class WebViewActivity extends Activity {
 
         webView = findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("https://github.com/zack-not-zac/PeekingDuck#how-to-use");
+        webView.loadUrl("https://github.com/zack-not-zac/PeekingDuck/blob/master/README.md#how-to-use");
     }
 
     @Override
