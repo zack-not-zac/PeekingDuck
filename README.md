@@ -41,7 +41,7 @@ The app allows a script to be added by typing it out within the app. This can be
 
 <img src="https://i.imgur.com/U2LcP8V.png" width="720px" />
 
-You then will be brought to a new screen with two text boxes. The first text box is for the name of the script, the second is for the script itself. For a full tutorial on the syntax and functions available in this scripting language, visit [The DuckyScript wiki page](https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Duckyscript).
+You then will be brought to a new screen with two text boxes. The first text box is for the name of the script, the second is for the script itself. For a full tutorial on the syntax and functions available in this scripting language, visit [the DuckyScript wiki page](https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Duckyscript).
 
 Once you're done creating your script, it can be added to the app with the + icon at the top right of the screen (in the toolbar).
 
