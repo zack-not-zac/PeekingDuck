@@ -27,49 +27,49 @@ Contributors:
 ### Creating a new script
 The app allows a script to be added by typing it out within the app. This can be done by open the navigation bar and selecting the option "Create New Script"
 
-<img src="https://i.imgur.com/U2LcP8V.png" width="35%" />
+<img src="https://i.imgur.com/U2LcP8V.png" />
 
 You then will be brought to a new screen with two text boxes. The first text box is for the name of the script, the second is for the script itself. Once you're done creating your script, it can be added to the app with the + icon at the top right of the screen (in the toolbar).
 
-<img src="https://i.imgur.com/h8Eic9W.png" width="35%" />
+<img src="https://i.imgur.com/h8Eic9W.png" />
 
 ### Loading a new script
 The application supports loading a script from internal storage. This is done by opening the navigation menu and selecting "Load New Script"
 
-<img src="https://i.imgur.com/PkxyAij.png" width="35%" />
+<img src="https://i.imgur.com/PkxyAij.png" />
 
 The phones file explorer should then appear, prompting the user to select a file. Once a payload has been selected, it should be loaded into the new script screen, allowing the user to enter a name for the script and add it (via the + icon in the toolbar).
 
-<img src="https://i.imgur.com/doM90lh.png" width="35%" />
+<img src="https://i.imgur.com/doM90lh.png" />
 
 
 ### Delete a script
 To delete a specific script, select the trash can icon within that item.
 
-<img src="https://i.imgur.com/Z8R7NLN.png" width="35%" />
+<img src="https://i.imgur.com/Z8R7NLN.png" />
 
 You will be prompted to confirm, click yes to delete.
 
-<img src="https://i.imgur.com/Aslsy7L.png" width="35%" />
+<img src="https://i.imgur.com/Aslsy7L.png" />
 
 
 
 ### Add script to the Queue
 Once a script has been added to the app, it can be placed in the queue. Navigate to the scripts page and click a script. This will open up the script editor. This will allow you to edit the script before adding it to the queue. This is necessary as some scripts hold variables (such as IP / Port), which need to be entered before the script is ran. Once the script is ready to be added to the queue, it can be done so via the + icon at the top right of the screen.
 
-<img src="https://i.imgur.com/fKH7cE6.png" width="35%" />
+<img src="https://i.imgur.com/fKH7cE6.png" />
 
 Once this has been done, the queue can be viewed by open the navigation bar and selecting "Queue". Multiple instances of the script can be added to the queue.
 
 ### Run the Queue
 The queue can be ran once it has at least one item in it. This can be done by pressing the play icon at the top right of the queue screen within the toolbar.
 
-<img src="https://i.imgur.com/gtTJml7.png" width="35%" />
+<img src="https://i.imgur.com/gtTJml7.png" />
 
 ### Run the Queue on connection
 The queue doesn't have to be run immediately, it can wait to be ran when there is a connection made to a PC. This can be done by simply pressing the play button while the phone is not connected to a computer. The app will detect it's not currently connected and prompt you to run when it is. Select yes on this prompt.
 
-<img src="https://i.imgur.com/Hm9GgEv.png" width="35%" />
+<img src="https://i.imgur.com/Hm9GgEv.png" />
 
 
 ### Re-order the queue
@@ -79,13 +79,13 @@ Queue items can be re-ordered by simply long pressing on a queue item and draggi
 ### Delete a script from the queue
 Queue items can be deleted by pressing the - icon on the queue item.
 
-<img src="https://i.imgur.com/tNAAn3p.png" width="35%" />
+<img src="https://i.imgur.com/tNAAn3p.png" />
 
 
 ### Clear the Queue
 While on the queue screen, press the trash can icon at the top right of the screen, in the toolbar. This will prompt you to confirm before clearing the queue.
 
-<img src="https://i.imgur.com/lPQ3xhx.png" width="35%" />
+<img src="https://i.imgur.com/lPQ3xhx.png" />
 
 
 ## TODO
