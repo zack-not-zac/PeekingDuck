@@ -27,11 +27,11 @@ Contributors:
 ### Creating a new script
 The app allows a script to be added by typing it out within the app. This can be done by open the navigation bar and selecting the option "Create New Script"
 
-<img src="https://i.imgur.com/U2LcP8V.png" />
+<img src="https://i.imgur.com/U2LcP8V.png" width="720px" />
 
 You then will be brought to a new screen with two text boxes. The first text box is for the name of the script, the second is for the script itself. Once you're done creating your script, it can be added to the app with the + icon at the top right of the screen (in the toolbar).
 
-<img src="https://i.imgur.com/h8Eic9W.png" />
+<img src="https://i.imgur.com/h8Eic9W.png" width="720px" />
 
 ### Loading a new script
 The application supports loading a script from internal storage. This is done by opening the navigation menu and selecting "Load New Script"
