@@ -12,6 +12,18 @@ Contributors:
 * [Cameron Morrison](https://github.com/CameronMorrison97) - Secretary
 
 ## How to use
+
+* [Creating a new script](#creating-a-new-script)
+* [Loading a new script](#loading-a-new-script)
+* [Delete a script](#delete-a-script)
+* [Add script to the Queue](#add-script-to-the-queue)
+* [Run the Queue](#run-the-queue)
+* [Run the Queue on connection](#run-the-queue-on-connection)
+* [Re-order the queue](#re-order-the-queue)
+* [Delete a script from the queue](#delete-a-script-from-the-queue)
+* [Clear the Queue](#clear-the-queue)
+
+
 ### Creating a new script
 The app allows a script to be added by typing it out within the app. This can be done by open the navigation bar and selecting the option "Create New Script"
 
@@ -29,6 +41,17 @@ The application supports loading a script from internal storage. This is done by
 The phones file explorer should then appear, prompting the user to select a file. Once a payload has been selected, it should be loaded into the new script screen, allowing the user to enter a name for the script and add it (via the + icon in the toolbar).
 
 <img src="https://i.imgur.com/doM90lh.png" width="35%" />
+
+
+### Delete a script
+To delete a specific script, select the trash can icon within that item.
+
+<img src="https://i.imgur.com/Z8R7NLN.png" width="35%" />
+
+You will be prompted to confirm, click yes to delete.
+
+<img src="https://i.imgur.com/Aslsy7L.png" width="35%" />
+
 
 
 ### Add script to the Queue
@@ -50,13 +73,19 @@ The queue doesn't have to be run immediately, it can wait to be ran when there i
 
 
 ### Re-order the queue
-Queue items can be re-ordered by simply long pressing on a queue item and dragging it to it's desired position.
+Queue items can be re-ordered by simply long pressing on a queue item and dragging it up or down. The item must be held for 1+ second, the phone will vibrate to confirm you've picked up the item.
 
 
 ### Delete a script from the queue
 Queue items can be deleted by pressing the - icon on the queue item.
 
 <img src="https://i.imgur.com/tNAAn3p.png" width="35%" />
+
+
+### Clear the Queue
+While on the queue screen, press the trash can icon at the top right of the screen, in the toolbar. This will prompt you to confirm before clearing the queue.
+
+<img src="https://i.imgur.com/lPQ3xhx.png" width="35%" />
 
 
 ## TODO
