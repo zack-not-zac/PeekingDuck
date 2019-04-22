@@ -3,10 +3,17 @@
 # PeekingDuck
 
 ## About
-The PeekingDuck app allows you to inject your own keystrokes into a computer. It does this with the help of the [Android Keyboard Gadget](https://github.com/pelya/android-keyboard-gadget), this allows us to turn the phone into a keyboard. This application is meant to emulate and build upon the functionality of the [USB Rubber Ducky](https://shop.hak5.org/products/usb-rubber-ducky-deluxe). The app supports [DuckyScript](https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Duckyscript), the language used by the USB rubber ducky to interact with the keyboard.
+The PeekingDuck app allows you to inject your own keystrokes into a computer. It does this with the help of the [Android Keyboard Gadget](https://github.com/pelya/android-keyboard-gadget), which allows us to turn the phone into a keyboard. This application is meant to emulate and build upon the functionality of the [USB Rubber Ducky](https://shop.hak5.org/products/usb-rubber-ducky-deluxe). The app supports [DuckyScript](https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Duckyscript), the language used by the USB Rubber Ducky to interact with the keyboard.
+
+The application features:
+* Ability to load, edit, and create DuckyScripts
+* Add script instances to the queue (meaning you can queue multiple instances of the same script!)
+* A simple user interface (No need for terminal emulators!)
+* Run scripts when the phone is connected to a PC (currently requires the application to be in the foreground when the phone is connected)
+* Use the phone storage to copy or save files from the connected computer when connected using MTP mode.
 
 ## Creators
-This app was developed as a group university project, as part as of our coursework for CMP311 - Professional Project Development and Delivery.
+This app was developed as a group university project.
 
 Contributors:
 * [Zack Anderson](https://github.com/zack-not-zac) - Team Leader
@@ -89,11 +96,9 @@ While on the queue screen, press the trash can icon at the top right of the scre
 
 <img src="https://i.imgur.com/lPQ3xhx.png" width="720px" />
 
+### Transfer Files
+To mount the phone as a storage device, navigate to Developer Settings (if you don't know how to do this, [here](https://developer.android.com/studio/debug/dev-options) is a quick tutorial).
 
-## TODO
- - [x] Add database
-   - [x] Add ability to view/remove data from database
-   - [x] Add second database for queueing script
- - [x] Automate adding script using file browser
- - [x] Add text editor and variable support
- - [x] Add onclick events for navmenu
+Then find the "Select USB Configuration" option and choose MTP. Please note that in some versions of Android this feature is bugged and will only work on the first connection, and reset to charging only afterwards - even though the option will still say MTP is the default configuration. There is no permanent fix for this, meaning you will have to complete these steps every time you connect the device if you wish to use a script which can transfer files. 
+
+Since phones do not mount as conventional storage devices on Windows, there is an example script outlining how to do this [here](https://github.com/zack-not-zac/PeekingDuck/scripts/filecopy.txt)
