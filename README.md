@@ -101,4 +101,4 @@ To mount the phone as a storage device, navigate to Developer Settings (if you d
 
 Then find the "Select USB Configuration" option and choose MTP. Please note that in some versions of Android this feature is bugged and will only work on the first connection, and reset to charging only afterwards - even though the option will still say MTP is the default configuration. There is no permanent fix for this, meaning you will have to complete these steps every time you connect the device if you wish to use a script which can transfer files. 
 
-Since phones do not mount as conventional storage devices on Windows, there is an example script outlining how to do this [here](https://github.com/zack-not-zac/PeekingDuck/scripts/filecopy.txt)
+Since phones do not mount as conventional storage devices on Windows, there is an example script outlining how to do this [here](https://github.com/zack-not-zac/PeekingDuck/scripts/filecopy.txt).
