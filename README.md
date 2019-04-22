@@ -10,7 +10,7 @@ The application features:
 * Add script instances to the queue (meaning you can queue multiple instances of the same script!)
 * A simple user interface (No need for terminal emulators!)
 * Run scripts when the phone is connected to a PC (currently requires the application to be in the foreground when the phone is connected)
-* Use the phone storage to copy or save files from the connected computer when connected using MTP mode.
+* Use the phone storage to copy or save files from the connected computer when using MTP mode.
 
 ## Creators
 This app was developed as a group university project.
