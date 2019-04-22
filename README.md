@@ -15,7 +15,7 @@ The application features:
 Please note that this application requires root permissions to execute scripts, and a phone with a kernel that supports HID. This application was developed and tested on a Nexus 5 running Kali NetHunter.
 
 ## Creators
-This app was developed as a group university project.
+This application was developed as a group university project.
 
 Contributors:
 * [Zack Anderson](https://github.com/zack-not-zac) - Team Leader
