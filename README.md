@@ -12,6 +12,8 @@ The application features:
 * Run scripts when the phone is connected to a PC (currently requires the application to be in the foreground when the phone is connected)
 * Use the phone storage to copy or save files from the connected computer when using MTP mode.
 
+Please note that this application requires root permissions to execute scripts, and a phone with a kernel that supports HID. This application was developed and tested on a Nexus 5 running Kali NetHunter.
+
 ## Creators
 This app was developed as a group university project.
 
