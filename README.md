@@ -1,4 +1,4 @@
-<img src="https://github.com/zack-not-zac/PeekingDuck/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" width="80px" height="80px" /> 
+<p align="center"><img src="https://github.com/zack-not-zac/PeekingDuck/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" width="80px" height="80px" /> </p>
 
 # PeekingDuck
 
