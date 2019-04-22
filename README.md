@@ -31,6 +31,7 @@ Contributors:
 * [Re-order the queue](#re-order-the-queue)
 * [Delete a script from the queue](#delete-a-script-from-the-queue)
 * [Clear the Queue](#clear-the-queue)
+* [Transferring Files](#transfer-files)
 
 
 ### Creating a new script
