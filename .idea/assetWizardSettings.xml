@@ -3,6 +3,11 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
+        <entry key="imageWizard">
+          <value>
+            <PersistentState />
+          </value>
+        </entry>
         <entry key="vectorWizard">
           <value>
             <PersistentState>
@@ -14,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_save" />
-                            <entry key="sourceFile" value="C:\Users\amg\Downloads\baseline-save-24px.svg" />
+                            <entry key="outputName" value="ic_github_logo" />
+                            <entry key="sourceFile" value="C:\Users\zackc\Pictures\github-logo.svg" />
                           </map>
                         </option>
                       </PersistentState>

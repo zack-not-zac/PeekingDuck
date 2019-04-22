@@ -105,13 +105,13 @@ public class MainActivity extends AppCompatActivity {
                 // close the drawer when you select and item.
                 drawer.closeDrawers();
 
-                switch(menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     // Add what happens when you click on the individual menu items here.
                     case R.id.nav_scripts:
-                        fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);        //clears the backstack when going back to main screen
+                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);        //clears the backstack when going back to main screen
                         return true;
                     case R.id.nav_queue:
-                        fragmentManager.beginTransaction().replace(R.id.fragment_container,queueFragment).addToBackStack(null).commit();
+                        fragmentManager.beginTransaction().replace(R.id.fragment_container, queueFragment).addToBackStack(null).commit();
                         return true;
                     case R.id.nav_add_new:
                         fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commit();
@@ -119,7 +119,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_load_new:
                         showFileChooser();
                         return true;
-
+                    case R.id.nav_github:
+                        Intent intent = new Intent(getApplicationContext(),WebViewActivity.class);
+                        startActivity(intent);
                 }
 
                 return true;
@@ -127,12 +129,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-        if(findViewById(R.id.fragment_container)!=null)
-        {
+        if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState == null)     //if view has not been created yet
             {
-                fragmentManager.beginTransaction().replace(R.id.fragment_container,viewScriptsFragment).commit(); //adds AddScriptFragment to mainactivity
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, viewScriptsFragment).commit(); //adds AddScriptFragment to mainactivity
                 navigationView.setCheckedItem(R.id.nav_scripts);
             }
         }
@@ -141,19 +141,19 @@ public class MainActivity extends AppCompatActivity {
 
         Intent battery = registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         int status = battery.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-        if(status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL) {
+        if (status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL) {
             int plug = battery.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-            if(plug == BatteryManager.BATTERY_PLUGGED_USB) {
+            if (plug == BatteryManager.BATTERY_PLUGGED_USB) {
                 queueFragment.usb_state_change(true);
             }
         }
     }
 
     private void request_permissions() {
-        if(ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             Toast.makeText(this, "External Storage permissions are required to store posters. Please allow this", Toast.LENGTH_LONG).show();
         } else {
-            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
     }
 
@@ -163,23 +163,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public boolean isUseQueueAdapter()
-    {
+    public boolean isUseQueueAdapter() {
         return useQueueAdapter;     //this function tells RecyclerViewFragment what adapter to use
     }                               //which determines if it will view the script table or the queue table
 
     @Override
     public void onBackPressed() {       //more navigation drawer stuff to animate the icon
-        if (drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else if (queueFragment.isVisible())
-        {
+        } else if (queueFragment.isVisible()) {
             useQueueAdapter = false;
-            fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);        //clears the backstack when going back to main screen
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);        //clears the backstack when going back to main screen
             navigationView.setCheckedItem(R.id.nav_scripts);        //allows the back button to swap the adapter if queue fragment is visible
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -198,9 +194,9 @@ public class MainActivity extends AppCompatActivity {
                     // File file = new File(path);
                     // Initiate the upload
                     String path = uri.getPath();
-                    if(path != null) {
+                    if (path != null) {
                         int index = path.indexOf(":");
-                        if(index > -1) {
+                        if (index > -1) {
                             path = path.substring(index + 1);
                             Log.d("FILE", "New Path: " + path);
                             loaded_payload_path = path;
@@ -215,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPostResume() {
         super.onPostResume();
-        if(loaded_payload_path != null) {
+        if (loaded_payload_path != null) {
             addFragment.set_file_path(loaded_payload_path);
             fragmentManager.beginTransaction().replace(R.id.fragment_container, addFragment).addToBackStack(null).commit();
             loaded_payload_path = null;
