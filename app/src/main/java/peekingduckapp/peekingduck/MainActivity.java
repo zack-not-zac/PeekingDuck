@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     private static final int FILE_SELECT_CODE = 0;
     private String loaded_payload_path = null;
+    private static String HELLO_WORLD_SCRIPT = "GUI r\nDELAY 500\nSTRING notepad\nENTER\nDELAY 500\nSTRING Hello World!";
+
+
 
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {

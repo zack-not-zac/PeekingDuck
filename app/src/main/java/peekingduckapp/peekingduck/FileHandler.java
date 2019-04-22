@@ -42,7 +42,7 @@ public class FileHandler {
     }
 
     public static String load_from_app_external_storage(String name) {
-        String file_path = path + "/" + name;
+        String file_path = path + name;
         File file = new File(file_path);
         StringBuilder sb = new StringBuilder();
 
@@ -70,7 +70,7 @@ public class FileHandler {
     }
 
     public static void save_file_to_external_storage(String name, String content) {
-        File file = new File(path + "/" + name);
+        File file = new File(path + name);
         File folder = file.getParentFile();
         if(!folder.isDirectory()) folder.mkdirs();
         if(file.exists()) file.delete();
