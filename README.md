@@ -1,4 +1,4 @@
-# PeekingDuck
+<img src="https://github.com/zack-not-zac/PeekingDuck/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"/> # PeekingDuck
 
 ## About
 The PeekingDuck app allows you to inject your own keystrokes into a computer. It does this with the help of the [Android Keyboard Gadget](https://github.com/pelya/android-keyboard-gadget), this allows us to turn the phone into a keyboard. This application is meant to emulate and build upon the functionality of the [USB Rubber Ducky](https://shop.hak5.org/products/usb-rubber-ducky-deluxe). The app supports [DuckyScript](https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Duckyscript), the language used by the USB rubber ducky to interact with the keyboard.
