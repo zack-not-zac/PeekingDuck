@@ -1,0 +1,31 @@
+REM Requires phone to be in File Storage Mode.
+GUI r
+DELAY 300
+STRING notepad.exe
+ENTER
+DELAY 400
+STRING Hello World, this is a test.
+CTRL s
+DELAY 500
+REM Change this to the file you wish to be copied
+STRING %userprofile%\Desktop\test.txt
+ENTER
+DELAY 100
+GUI d
+DELAY 1000
+STRING test.txt
+CTRL x
+DELAY 100
+GUI e
+DELAY 400
+STRING Nexus 5
+ENTER
+DELAY 500
+STRING Internal Storage
+ENTER
+DELAY 500
+STRING PeekingDuck
+ENTER
+DELAY 500
+CTRL v
+ALT F4
