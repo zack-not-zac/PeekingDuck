@@ -35,7 +35,7 @@ Contributors:
 * [Clear the Queue](#clear-the-queue)
 * [Transferring Files](#transfer-files)
 
-Our example scripts can be found [here](https://github.com/zack-not-zac/PeekingDuck/tree/master/scripts)
+Our example scripts can be found [here](https://github.com/zack-not-zac/PeekingDuck/tree/master/scripts).
 
 
 ### Creating a new script
