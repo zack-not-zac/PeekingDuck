@@ -35,6 +35,8 @@ Contributors:
 * [Clear the Queue](#clear-the-queue)
 * [Transferring Files](#transfer-files)
 
+Our example scripts can be found [here](https://github.com/zack-not-zac/PeekingDuck/tree/master/scripts)
+
 
 ### Creating a new script
 The app allows a script to be added by typing it out within the app. This can be done by open the navigation bar and selecting the option "Create New Script"
